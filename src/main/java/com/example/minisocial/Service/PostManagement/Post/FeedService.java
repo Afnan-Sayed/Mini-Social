@@ -12,10 +12,10 @@ public class FeedService
     @PersistenceContext
     private EntityManager em;
 
-    // Method to fetch paginated feed (3 posts at a time)
+    //fetch paginated feed (top 3 posts from each one of friends and of the user at a time)
     public List<Post> getUserFeed(Long userId, int offset, int limit) {
         return em.createQuery(
-                        "SELECT p FROM Post p WHERE p.userId = :userId " +
+                        "SELECT p FROM Post p WHERE p.userID = :userId " +
                                 "ORDER BY p.timestamp DESC", Post.class)
                 .setParameter("userId", userId)
                 .setFirstResult(offset)  // Set the offset (starting point)

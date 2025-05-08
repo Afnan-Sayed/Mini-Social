@@ -12,12 +12,22 @@ public class Post
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long postID;
     private Long userID; // ID of the user who posted (FK)
-    private String status; // The post content
+    private String status;
     private LocalDateTime timestamp; // Timestamp when post was created
     private String author;
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<PostContent> postContents;
+
+    public Post(Long postID, Long userID, String status, LocalDateTime timestamp, String author)
+    {
+        this.postID=postID;
+        this.userID=userID;
+        this.status=status;
+        this.timestamp=timestamp;
+        this.author=author;
+    }
+    public Post(){}
 
     // Getters and Setters
     public Long getId() { return postID; }
@@ -25,6 +35,9 @@ public class Post
 
     public String getAuthor() { return author; }
     public void setAuthor(String author) { this.author= author; }
+
+    public List<PostContent> getPostContents() { return postContents; }
+    public void setPostContents(List<PostContent> postContents) { this.postContents= postContents; }
 
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status= status; }

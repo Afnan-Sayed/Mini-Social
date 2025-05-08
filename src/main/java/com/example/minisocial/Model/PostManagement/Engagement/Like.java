@@ -1,4 +1,4 @@
-package com.example.minisocial.Model.PostManagement;
+package com.example.minisocial.Model.PostManagement.Engagement;
 
 public class Like {
 }
