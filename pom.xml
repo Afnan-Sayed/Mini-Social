@@ -45,6 +45,19 @@
                 <artifactId>maven-war-plugin</artifactId>
                 <version>3.4.0</version>
             </plugin>
+            <plugin>
+                <groupId>org.wildfly.plugins</groupId>
+                <artifactId>wildfly-maven-plugin</artifactId>
+                <version>3.0.0.Final</version>
+                <configuration>
+                    <hostname>localhost</hostname>
+                    <port>9990</port>
+                    <username>afnan</username>  <!-- Username for WildFly management -->
+                    <password>root123</password>  <!-- Password for WildFly management -->
+
+                </configuration>
+            </plugin>
         </plugins>
+
     </build>
 </project>
