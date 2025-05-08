@@ -33,6 +33,7 @@ public class UserLoginService {
             throw new IllegalArgumentException("Invalid email or password.");
         }
 
+
         try {
             String decodedPassword = new String(Base64.getUrlDecoder().decode(user.getPassword()));
             if (!password.equals(decodedPassword)) {
