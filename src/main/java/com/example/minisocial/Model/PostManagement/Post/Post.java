@@ -11,30 +11,30 @@ public class Post
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long postID;
-    private Long userID; // ID of the user who posted (FK)
+
+    private Long authorID; // ID of the user who posted (FK)
+    private String authorName;
     private String status;
     private LocalDateTime timestamp; // Timestamp when post was created
-    private String author;
+
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<PostContent> postContents;
 
-    public Post(Long postID, Long userID, String status, LocalDateTime timestamp, String author)
+    public Post(Long authorID, String status, LocalDateTime timestamp, String authorName)
     {
-        this.postID=postID;
-        this.userID=userID;
+        this.authorID=authorID;
+        this.authorName=authorName;
         this.status=status;
         this.timestamp=timestamp;
-        this.author=author;
     }
     public Post(){}
 
     // Getters and Setters
-    public Long getId() { return postID; }
-    public void setId(Long id) { this.postID= id; }
+    public Long getPostId() { return postID; }
 
-    public String getAuthor() { return author; }
-    public void setAuthor(String author) { this.author= author; }
+    public String getAuthorName() { return authorName; }
+    public void setAuthor(String author) { this.authorName= author; }
 
     public List<PostContent> getPostContents() { return postContents; }
     public void setPostContents(List<PostContent> postContents) { this.postContents= postContents; }
@@ -42,8 +42,8 @@ public class Post
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status= status; }
 
-    public Long getUserId() { return userID; }
-    public void setUserId(Long userId) { this.userID = userId; }
+    public Long getUserId() { return authorID; }
+    public void setUserId(Long userId) { this.authorID = userId; }
 
     public LocalDateTime getTimestamp() { return timestamp; }
     public void setTimestamp(LocalDateTime timestamp) { this.timestamp = timestamp; }
