@@ -8,6 +8,7 @@ public class PostContent
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long contentID;
+
     private String type;  //image,link, text.
     private String contentValue; //URL or text
 
@@ -17,7 +18,6 @@ public class PostContent
 
     // Getters and setters
     public Long getContentID() { return contentID; }
-    public void setContentID(Long contentID) { this.contentID= contentID; }
 
     public String getType() { return type; }
     public void setType(String type) { this.type= type; }
