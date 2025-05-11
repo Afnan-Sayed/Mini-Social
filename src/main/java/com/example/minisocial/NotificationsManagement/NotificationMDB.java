@@ -5,26 +5,29 @@ import jakarta.jms.Message;
 import jakarta.jms.MessageListener;
 import jakarta.jms.ObjectMessage;
 import jakarta.jms.JMSException;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 
-@MessageDriven(mappedName = "queue/NotificationQueue")  // Specify the queue you want to listen to
+@MessageDriven(mappedName = "queue/NotificationQueue")
 public class NotificationMDB implements MessageListener {
+
+    @PersistenceContext(unitName = "myPersistenceUnit")
+    private EntityManager entityManager;
 
     @Override
     public void onMessage(Message message) {
         if (message instanceof ObjectMessage) {
             try {
                 NotificationEvent event = (NotificationEvent) ((ObjectMessage) message).getObject();
-                processEvent(event); // Call method to handle the event
+                processEvent(event);  // Process the event
             } catch (JMSException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    // Handle the received event (e.g., store in DB, trigger notifications)
     private void processEvent(NotificationEvent event) {
-        // Process the event, like saving it in the database or triggering another action
-        System.out.println("Received event: " + event.getEventType() + " for user: " + event.getTargetUserId());
-        // You can perform additional actions like sending email, updating database, etc.
+        // Save the event to the database
+        entityManager.persist(event);  // Store the notification in the database
     }
 }

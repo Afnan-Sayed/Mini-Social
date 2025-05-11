@@ -1,11 +1,14 @@
-package com.example.minisocial.NotificationsManagemeimport javax.jms.*;
+package com.example.minisocial.NotificationsManagement;
+
+
+import jakarta.jms.*;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 public class NotificationProducer {
 
     // The JNDI name of the JMS queue
-    private static final String QUEUE_NAME = "java:/jms/queue/NotificationqQueue";  // JMS queue JNDI name
+    private static final String QUEUE_NAME = "queue/NotificationQueue";  // JMS queue JNDI name
 
     public void sendNotification(NotificationEvent event) {
         try {

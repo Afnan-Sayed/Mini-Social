@@ -1,15 +1,30 @@
 package com.example.minisocial.NotificationsManagement;
 
+import jakarta.persistence.*;
+
 import java.io.Serializable;
 
+@Entity
+@Table(name="Events")
 public class NotificationEvent implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+
+    @Column(nullable = false)
     private String eventType;
+
     private String userId;
     private String targetUserId;
+
+    @Column(nullable = false)
     private String message;
+    @Column(nullable = false)
     private String timestamp;
 
-    // Getters and setters for all fields
+
+    public NotificationEvent() {
+    }
 
     public NotificationEvent(String eventType, String userId, String targetUserId, String message, String timestamp) {
         this.eventType = eventType;
@@ -17,6 +32,14 @@ public class NotificationEvent implements Serializable {
         this.targetUserId = targetUserId;
         this.message = message;
         this.timestamp = timestamp;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getEventType() {
