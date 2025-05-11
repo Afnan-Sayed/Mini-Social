@@ -1,7 +1,5 @@
 package com.example.minisocial.Service.UserManagement;
 
-
-
 import com.example.minisocial.Model.UserManagement.User;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
