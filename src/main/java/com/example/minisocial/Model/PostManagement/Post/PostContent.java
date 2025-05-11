@@ -16,6 +16,9 @@ public class PostContent
     @JoinColumn(name = "post_id")
     private Post post;
 
+    public Post getPost() {
+        return post;
+    }
     // Getters and setters
     public Long getContentID() { return contentID; }
 
@@ -24,4 +27,8 @@ public class PostContent
 
     public String getContentValue() { return contentValue; }
     public void setContentValue(String contentValue) { this.contentValue= contentValue; }
+
+    public void linkToPost(Post post) {
+        this.post = post;
+    }
 }

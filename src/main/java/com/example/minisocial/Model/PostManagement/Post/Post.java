@@ -1,5 +1,6 @@
 package com.example.minisocial.Model.PostManagement.Post;
 
+import com.example.minisocial.Model.UserManagement.User;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -12,8 +13,9 @@ public class Post
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long postID;
 
-    private Long authorID; // ID of the user who posted (FK)
-    private String authorName;
+    @ManyToOne
+    @JoinColumn(name = "authorID")
+    private User author;
     private String status;
     private LocalDateTime timestamp; // Timestamp when post was created
 
@@ -21,32 +23,27 @@ public class Post
     @OneToMany(cascade = CascadeType.ALL)
     private List<PostContent> postContents;
 
-    public Post(Long authorID, String status, LocalDateTime timestamp,
-                String authorName, List<PostContent> postContents
-                )
+    public Post(User author, String status, LocalDateTime timestamp, List<PostContent> postContents)
     {
-        this.authorID=authorID;
-        this.authorName=authorName;
-        this.status=status;
-        this.timestamp=timestamp;
+        this.author = author;
+        this.status = status;
+        this.timestamp = timestamp;
         this.postContents = postContents;
     }
-    public Post(){}
+
+    public Post() {}
 
     // Getters and Setters
     public Long getPostId() { return postID; }
 
-    public String getAuthorName() { return authorName; }
-    public void setAuthor(String author) { this.authorName= author; }
-
     public List<PostContent> getPostContents() { return postContents; }
-    public void setPostContents(List<PostContent> postContents) { this.postContents= postContents; }
+    public void setPostContents(List<PostContent> postContents) { this.postContents = postContents; }
 
     public String getStatus() { return status; }
-    public void setStatus(String status) { this.status= status; }
+    public void setStatus(String status) { this.status = status; }
 
-    public Long getUserId() { return authorID; }
-    public void setUserId(Long userId) { this.authorID = userId; }
+    public User getAuthor() { return author; }
+    public void setAuthor(User author) { this.author = author; }
 
     public LocalDateTime getTimestamp() { return timestamp; }
     public void setTimestamp(LocalDateTime timestamp) { this.timestamp = timestamp; }
