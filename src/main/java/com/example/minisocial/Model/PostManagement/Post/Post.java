@@ -4,29 +4,29 @@ import com.example.minisocial.Model.UserManagement.User;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.util.List;
-//JPA entity bean
-
 
 @Entity
-public class Post
-{
+public class Post {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long postID;
 
+
     @ManyToOne
     @JoinColumn(name = "authorID")
     private User author;
-    private String status;
 
+    private String authorName;
+    private String status;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<PostContent> postContents;
 
-    public Post(User author, String status, List<PostContent> postContents)
-    {
-        this.author = author;
+
+    public Post(String authorName, String status, List<PostContent> postContents) {
+        this.authorName = authorName;
         this.status = status;
         this.postContents = postContents;
     }
@@ -34,14 +34,43 @@ public class Post
     public Post() {}
 
     // Getters and Setters
-    public Long getPostId() { return postID; }
+    public Long getPostId() {
+        return postID;
+    }
 
-    public List<PostContent> getPostContents() { return postContents; }
-    public void setPostContents(List<PostContent> postContents) { this.postContents = postContents; }
+    public List<PostContent> getPostContents() {
+        return postContents;
+    }
 
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
+    public void setPostContents(List<PostContent> postContents) {
+        this.postContents = postContents;
+    }
 
-    public User getAuthor() { return author; }
-    public void setAuthor(User author) { this.author = author; }
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getAuthor() {
+        return authorName;
+    }
+
+    public void setAuthor(String author) {
+        this.authorName = author;
+    }
+
+
+    public void setAuthor(User author) {
+        this.author = author;
+        if (author!= null) {
+            this.authorName = author.getName(); //set authorr name automatically
+        }
+    }
+
+    public User getUser() {
+        return author;
+    }
 }
