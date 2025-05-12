@@ -26,7 +26,7 @@ public class PostCreator
         }
 
         User user = userService.getUserByEmail(loggedInEmail);
-        String name= user.getName();
+
         if (user.getRole().equalsIgnoreCase("admin")) {
             throw new SecurityException("Admins are not allowed to create posts");
         }
@@ -36,7 +36,7 @@ public class PostCreator
             throw new IllegalArgumentException("Post contents cannot be null or empty");
         }
 
-        Post post = new Post(name, status, postContents);
+        Post post = new Post(user.getName(), status, postContents);
 
         // Persist each post content and link it to the post
         for (PostContent content : postContents) {
