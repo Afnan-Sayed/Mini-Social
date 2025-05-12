@@ -22,24 +22,33 @@ public class PostCreator
 
     public Post createPost(String loggedInEmail, String status, List<PostContent> postContents)
     {
+        if (loggedInEmail == null || loggedInEmail.isEmpty()) {
+            throw new IllegalArgumentException("Email is required");
+        }
+
         User user = userService.getUserByEmail(loggedInEmail);
-        String role= user.getRole();
-        if (role.equals("admin")){
+
+        if (user.getRole().equalsIgnoreCase("admin")) {
             throw new SecurityException("Admins are not allowed to create posts");
         }
-        //validate that at least one post content type is not null or empty
+
+        //at least one post content is not null or empty
         if (postContents == null || postContents.isEmpty()) {
             throw new IllegalArgumentException("Post contents cannot be null or empty");
         }
 
-        Post post = new Post(user, status, LocalDateTime.now(), postContents);
-        // Persist content (links, images, text)
+        Post post = new Post(user, status, postContents);
+
+        // Persist each post content and link it to the post
         for (PostContent content : postContents) {
-            content.linkToPost(post);  // Link the content to the post
-            entityManager.persist(content);  // Persist content to the database
+            content.linkToPost(post);
+            entityManager.persist(content);
         }
 
+        // Persist the post object in the database
         entityManager.persist(post);
+
+        // Return the created post
         return post;
     }
 }
