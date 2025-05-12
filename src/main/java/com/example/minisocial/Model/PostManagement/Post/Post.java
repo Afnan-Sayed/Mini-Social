@@ -1,10 +1,12 @@
 package com.example.minisocial.Model.PostManagement.Post;
 
 import com.example.minisocial.Model.UserManagement.User;
+import com.example.minisocial.Model.UserManagement.UserDTOForPost;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
 import java.util.List;
 //JPA entity bean
+
 
 @Entity
 public class Post
@@ -17,17 +19,16 @@ public class Post
     @JoinColumn(name = "authorID")
     private User author;
     private String status;
-    private LocalDateTime timestamp; // Timestamp when post was created
 
 
     @OneToMany(cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<PostContent> postContents;
 
-    public Post(User author, String status, LocalDateTime timestamp, List<PostContent> postContents)
+    public Post(User author, String status, List<PostContent> postContents)
     {
         this.author = author;
         this.status = status;
-        this.timestamp = timestamp;
         this.postContents = postContents;
     }
 
@@ -45,6 +46,7 @@ public class Post
     public User getAuthor() { return author; }
     public void setAuthor(User author) { this.author = author; }
 
-    public LocalDateTime getTimestamp() { return timestamp; }
-    public void setTimestamp(LocalDateTime timestamp) { this.timestamp = timestamp; }
+    public UserDTOForPost getAuthorDTO() {
+        return new UserDTOForPost(author.getName(), author.getEmail(), author.getBio());
+    }
 }

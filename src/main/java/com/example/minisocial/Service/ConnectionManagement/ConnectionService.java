@@ -1,5 +1,6 @@
 package com.example.minisocial.Service.ConnectionManagement;
 
+import com.example.minisocial.Model.PostManagement.Post.Post;
 import com.example.minisocial.Model.UserManagement.User;
 import com.example.minisocial.Model.ConnectionManagement.FriendRequest;
 import jakarta.ejb.Stateless;
@@ -162,4 +163,43 @@ public class ConnectionService {
 
         return userDTOs;
     }
+
+
+    @Transactional
+    public UserDTO getFriendProfile(Long friendId, User currentUser) {
+        // Check if the current user is actually friends with the user they are trying to view
+        List<User> friends = currentUser.getFriends();
+        User friend = null;
+
+        // Find the friend in the current user's friends list
+        for (User u : friends) {
+            if (u.getId().equals(friendId)) {
+                friend = u;
+                break;
+            }
+        }
+
+        if (friend == null) {
+            throw new IllegalArgumentException("This user is not your friend.");
+        }
+
+        // Create the UserDTO
+        return new UserDTO(friend.getId(), friend.getName(), friend.getEmail(), friend.getBio());
+    }
+
+    @Transactional
+    public List<Post> getPostsOfFriend(Long friendId) {
+        // Fetch the user (friend) based on the friendId
+        User friend = em.find(User.class, friendId);
+
+        if (friend == null) {
+            throw new IllegalArgumentException("Friend not found");
+        }
+
+        // Return all posts of this friend
+        return em.createQuery("SELECT p FROM Post p WHERE p.author = :author", Post.class)
+                .setParameter("author", friend)
+                .getResultList();
+    }
+
 }

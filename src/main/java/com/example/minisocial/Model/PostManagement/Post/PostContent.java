@@ -1,5 +1,6 @@
 package com.example.minisocial.Model.PostManagement.Post;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -14,6 +15,7 @@ public class PostContent
 
     @ManyToOne
     @JoinColumn(name = "post_id")
+    @JsonBackReference
     private Post post;
 
     public Post getPost() {
