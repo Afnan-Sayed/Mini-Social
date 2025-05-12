@@ -1,10 +1,15 @@
 package com.example.minisocial.Model.UserManagement;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.example.minisocial.Model.GroupsManagement.Group;
+import com.example.minisocial.Model.GroupsManagement.JoinRequest;
+import jakarta.persistence.*;
 
 import jakarta.persistence.*;
 import java.util.List;
 import jakarta.json.bind.annotation.JsonbTransient;
 import com.example.minisocial.Model.ConnectionManagement.FriendRequest;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.List;
 
 @Entity
 public class User {
@@ -34,6 +39,19 @@ public class User {
     private List<com.example.minisocial.Model.UserManagement.User> friends;  // List of friends
 
     // Getters and setters
+    //new
+    @ManyToMany(mappedBy = "members", fetch = FetchType.EAGER)
+    @JsonIgnore
+    private List<Group> groups;
+
+    @ManyToMany(mappedBy = "adminOfGroups",fetch = FetchType.EAGER)
+    @JsonIgnore
+    private List<Group> adminOfGroups;
+
+
+
+    public User() {
+    }
 
     public User(String email, String password, String name, String bio, String role) {
         this.email = email;
@@ -43,10 +61,39 @@ public class User {
         this.role = role;
     }
 
-    public User() {
-
+    //new
+    // Getters and Setters
+    public List<Group> getGroups() {
+        return groups;
     }
 
+    public void setGroups(List<Group> groups) {
+        this.groups = groups;
+    }
+
+    public List<Group> getAdminOfGroups() {
+        return adminOfGroups;
+    }
+
+    public void setAdminOfGroups(List<Group> adminOfGroups) {
+        this.adminOfGroups = adminOfGroups;
+    }
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<JoinRequest> joinRequests;
+    public List<JoinRequest> getJoinRequests() {
+        return joinRequests;
+    }
+
+    public void setJoinRequests(List<JoinRequest> joinRequests) {
+        this.joinRequests = joinRequests;
+    }
+
+
+
+
+    /////////////////////////////
     public Long getId() {
         return id;
     }

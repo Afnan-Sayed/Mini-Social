@@ -1,5 +1,7 @@
 package com.example.minisocial.Model.GroupsManagement;
-
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.example.minisocial.Model.PostManagement.Post.Post;
 import com.example.minisocial.Model.UserManagement.User;
 import jakarta.persistence.*;
@@ -23,31 +25,36 @@ public class Group implements Serializable {
     private Boolean open = true;
 
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "creator_id")
+    @JsonBackReference // to stop recursion from User → Group → User → ...
     private User creator;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "group_members",
             joinColumns = @JoinColumn(name = "group_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
+    @JsonBackReference // to stop recursion from User → Group → User → ...
     private List<User> members;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "group_admins",
             joinColumns = @JoinColumn(name = "group_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
+    @JsonBackReference // to stop recursion from User → Group → User → ...
     private List<User> adminOfGroups;
 
     @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<JoinRequest> joinRequests = new ArrayList<>();
 
     //postnew
     @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Post> posts = new ArrayList<>();
     public List<Post> getPosts() {
         return posts;

@@ -1,5 +1,6 @@
 package com.example.minisocial.Model.GroupsManagement;
 
+
 import com.example.minisocial.Model.UserManagement.User;
 import jakarta.persistence.*;
 
@@ -11,11 +12,11 @@ public class JoinRequest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "group_id")
     private Group group;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
 
