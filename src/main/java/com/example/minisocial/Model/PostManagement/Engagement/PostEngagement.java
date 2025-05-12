@@ -5,11 +5,11 @@ import com.example.minisocial.Model.UserManagement.User;
 import jakarta.persistence.*;
 
 @Entity
-public class Comment
+public class PostEngagement
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long commentId;
+    private Long engagementId;
 
     @ManyToOne
     @JoinColumn(name = "post_id")
@@ -19,19 +19,24 @@ public class Comment
     @JoinColumn(name = "user_id")
     private User user;
 
-    private String content;
+    private Boolean liked;
 
-    public Comment() {}
+    @ManyToOne
+    @JoinColumn(name = "comment_id")
+    private Comment comment;
 
-    public Comment(Post post, User user, String content)
-    {
+    public PostEngagement() {}
+
+    public PostEngagement(Post post, User user, Boolean liked, Comment comment) {
         this.post = post;
         this.user = user;
-        this.content = content;
+        this.liked = liked;
+        this.comment = comment;
     }
 
     // Getters and Setters
-    public Long getCommentId() { return commentId; }
+    public Long getEngagementId() { return engagementId; }
+    public void setEngagementId(Long engagementId) { this.engagementId = engagementId; }
 
     public Post getPost() { return post; }
     public void setPost(Post post) { this.post = post; }
@@ -39,6 +44,9 @@ public class Comment
     public User getUser() { return user; }
     public void setUser(User user) { this.user = user; }
 
-    public String getContent() { return content; }
-    public void setContent(String content) { this.content = content; }
+    public Boolean getLiked() { return liked; }
+    public void setLiked(Boolean liked) { this.liked = liked; }
+
+    public Comment getComment() { return comment; }
+    public void setComment(Comment comment) { this.comment = comment; }
 }

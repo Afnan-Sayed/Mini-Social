@@ -23,7 +23,7 @@ public class Post
     private String authorName;
 
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonManagedReference
     private List<PostContent> postContents;
 
