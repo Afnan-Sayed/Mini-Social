@@ -1,96 +1,139 @@
 package com.example.minisocial.Model.GroupsManagement;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.example.minisocial.Model.PostManagement.Post.Post;
+import com.example.minisocial.Model.UserManagement.User;
 import jakarta.persistence.*;
+
 import java.io.Serializable;
 import java.util.List;
+import java.util.ArrayList;
 
-    @Entity
-    @Table(name = "app_groups")
-    public class Group implements Serializable {
+@Entity
+@Table(name = "app_groups")
+public class Group implements Serializable {
 
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-        private String name;
-        private String description;
-        private boolean isOpen;
+    private String name;
+    private String description;
 
-        @ManyToOne
-        @JoinColumn(name = "creator_id")
-        private User creator;
-//Each Group can have multiple Users as members.
-//
-//Each User can belong to multiple Groups (many-to-many).
-        @ManyToMany
-        @JoinTable(
-                name = "group_members",
-                joinColumns = @JoinColumn(name = "group_id"),
-                inverseJoinColumns = @JoinColumn(name = "user_id")
-        )
-        private List<User> members;
-        @ManyToMany
-        @JoinTable(
-                name = "group_admins",
-                joinColumns = @JoinColumn(name = "group_id"),
-                inverseJoinColumns = @JoinColumn(name = "user_id")
-        )
-        private List<User> admins;
-
-        // Getters and Setters
-        public Long getId() {
-            return id;
-        }
-
-        public void setId(Long id) {
-            this.id = id;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getDescription() {
-            return description;
-        }
-
-        public void setDescription(String description) {
-            this.description = description;
-        }
-
-        public boolean isOpen() {
-            return isOpen;
-        }
-
-        public void setOpen(boolean open) {
-            isOpen = open;
-        }
-
-        public User getCreator() {
-            return creator;
-        }
-
-        public void setCreator(User creator) {
-            this.creator = creator;
-        }
-
-        public List<User> getMembers() {
-            return members;
-        }
-
-        public void setMembers(List<User> members) {
-            this.members = members;
-        }
-        public List<User> getAdmins() {
-            return admins;
-        }
-
-        public void setAdmins(List<User> admins) {
-            this.admins = admins;
-        }
+    @Column(name = "is_open", nullable = false)
+    private Boolean open = true;
 
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "creator_id")
+    @JsonBackReference // to stop recursion from User → Group → User → ...
+    private User creator;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "group_members",
+            joinColumns = @JoinColumn(name = "group_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    @JsonBackReference // to stop recursion from User → Group → User → ...
+    private List<User> members;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "group_admins",
+            joinColumns = @JoinColumn(name = "group_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    @JsonBackReference // to stop recursion from User → Group → User → ...
+    private List<User> adminOfGroups;
+
+    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<JoinRequest> joinRequests = new ArrayList<>();
+
+    //postnew
+    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Post> posts = new ArrayList<>();
+    public List<Post> getPosts() {
+        return posts;
     }
+
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
+    }
+
+
+//public constractor
+
+    // Constructor to ensure default value is always set
+    public Group() {
+        this.open = true; // or false if you want closed groups by default
+    }
+
+    // Getters and Setters
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public boolean isOpen() {
+        return open;
+    }
+
+    public void setOpen(boolean open) {
+        this.open = open;
+    }
+
+    public User getCreator() {
+        return creator;
+    }
+
+    public void setCreator(User creator) {
+        this.creator = creator;
+    }
+
+    public List<User> getMembers() {
+        return members;
+    }
+
+    public void setMembers(List<User> members) {
+        this.members = members;
+    }
+
+    public List<User> getAdmins() {
+        return adminOfGroups;
+    }
+
+    public void setAdmins(List<User> admins) {
+        this.adminOfGroups = admins;
+    }
+
+    public List<JoinRequest> getJoinRequests() {
+        return joinRequests;
+    }
+
+    public void setJoinRequests(List<JoinRequest> joinRequests) {
+        this.joinRequests = joinRequests;
+    }
+}
