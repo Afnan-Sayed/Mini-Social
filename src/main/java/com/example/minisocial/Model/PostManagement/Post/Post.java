@@ -25,8 +25,9 @@ public class Post
     @JsonManagedReference
     private List<PostContent> postContents;
 
-    public Post(String authorName, String status, List<PostContent> postContents)
+    public Post(User author, String authorName, String status, List<PostContent> postContents)
     {
+        this.author = author;
         this.authorName = authorName;
         this.status = status;
         this.postContents = postContents;

@@ -36,7 +36,7 @@ public class PostCreator
             throw new IllegalArgumentException("Post contents cannot be null or empty");
         }
 
-        Post post = new Post(user.getName(), status, postContents);
+        Post post = new Post(user, user.getName(), status, postContents);
 
         // Persist each post content and link it to the post
         for (PostContent content : postContents) {
