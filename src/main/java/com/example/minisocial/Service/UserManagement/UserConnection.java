@@ -10,7 +10,6 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
-import org.hibernate.Hibernate;
 
 @Stateless
 
