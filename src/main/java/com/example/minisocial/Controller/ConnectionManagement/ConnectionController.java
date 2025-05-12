@@ -45,7 +45,6 @@ public class ConnectionController {
 
         try {
             connectionService.sendFriendRequest(sender, receiver);
-
             return Response.ok().build();
         } catch (IllegalStateException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
@@ -192,20 +191,15 @@ public class ConnectionController {
         try {
             // Fetch the current user based on the email
             User currentUser = userService.getUserByEmail(email);
-            Long friendId=currentUser.getId();
-            UserProfileDTO friendProfileDTO = connectionService.getFriendProfile(friendId);
 
             if (currentUser == null) {
                 return Response.status(Response.Status.NOT_FOUND).entity("User not found").build();
-            }
-            if (friendProfileDTO == null) {
-                return Response.status(Response.Status.NOT_FOUND).entity("Friend profile not found").build();
             }
 
             // Fetch the friends' names of the current user
             List<String> friendsNames = connectionService.getFriendsNames(currentUser);
 
-            return Response.ok(friendProfileDTO).build();
+            return Response.ok(friendsNames).build();
         } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Failed to fetch friends: " + e.getMessage()).build();
         }
@@ -273,4 +267,3 @@ public class ConnectionController {
         }
     }
 }
-

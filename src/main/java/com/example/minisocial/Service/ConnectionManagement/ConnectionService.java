@@ -14,9 +14,8 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Response;
-import com.example.minisocial.Model.UserManagement.UserDTO;
 import org.hibernate.Hibernate;
-
+import com.example.minisocial.Model.UserManagement.UserDTO;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -124,7 +123,7 @@ public class ConnectionService {
         return suggestedFriends;
     }
 
-        // Find a friend request by ID
+    // Find a friend request by ID
     public FriendRequest findFriendRequestById(Long requestId) {
         return em.find(FriendRequest.class, requestId);
     }
