@@ -31,6 +31,6 @@ public class NotificationMDB implements MessageListener {
 
     private void processEvent(NotificationEvent event) {
         // Save the event to the database
-        entityManager.persist(event);  // Store the notification in the database
+        entityManager.persist(event);// Store the notification in the database
     }
 }

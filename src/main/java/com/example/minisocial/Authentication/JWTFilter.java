@@ -1,6 +1,7 @@
 package com.example.minisocial.Authentication;
 
 import io.jsonwebtoken.Jwts;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.ws.rs.container.*;
 import jakarta.ws.rs.core.*;
 import io.jsonwebtoken.Claims;
@@ -8,48 +9,41 @@ import io.jsonwebtoken.JwtParser;
 import jakarta.ws.rs.ext.Provider;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.container.ResourceInfo;
+
 import java.io.IOException;
+import java.security.Principal;
 import java.util.Base64;
 import java.util.Date;
 
 @Provider
-@PreMatching
 public class JWTFilter implements ContainerRequestFilter {
 
-    private static final String SECRET_KEY = "J7PoPDMZjVZLKDQ/z65nslM/yPnX4W3Kq30YhKq26tKIoPXPDxUj0Sve77jOqKkck0nvYe2/6sEbMjYeX/WmnQ=="; // Secret key for signing JWT
+    private static final String SECRET_KEY = "J7PoPDMZjVZLKDQ/z65nslM/yPnX4W3Kq30YhKq26tKIoPXPDxUj0Sve77jOqKkck0nvYe2/6sEbMjYeX/WmnQ==";
 
     @Context
-    private ResourceInfo resourceInfo;  // Inject ResourceInfo to access method and class annotations
+    private ResourceInfo resourceInfo;
+
+    @Context
+    private SecurityContext currentSecurityContext;
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
-        // Check if the class or method has the @JWTRequired annotation
-        if (!isJWTRequired(requestContext)) {
-            return; // Skip filter if no JWT validation is required
+        if (resourceInfo.getResourceMethod() == null || !isJWTRequired()) {
+            return;
         }
 
         String authHeader = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            String token = authHeader.substring(7); // Extract token
+            String token = authHeader.substring(7);
             try {
-                // Create JwtParser using JwtParserBuilder
                 JwtParser jwtParser = Jwts.parser()
-                        .setSigningKey(Base64.getDecoder().decode(SECRET_KEY)) // Decode the Base64 secret key
+                        .setSigningKey(Base64.getDecoder().decode(SECRET_KEY))
                         .build();
 
-                // Validate JWT and extract claims
                 Claims claims = jwtParser.parseClaimsJws(token).getBody();
 
-                // Extract role from the token and set it in the request context
                 String role = claims.get("role", String.class);
-                requestContext.setProperty("role", role);  // Store role for later use
-
-                // Set user ID or email for other use cases
-                String userId = claims.getSubject();  // ID
-                requestContext.setProperty("userId", userId);
-
-                String userEmail = claims.getSubject();  // Email
-                requestContext.setProperty("userEmail", userEmail);
+                String userId = claims.getSubject();
 
                 // Check token expiration
                 Date expiration = claims.getExpiration();
@@ -57,17 +51,62 @@ public class JWTFilter implements ContainerRequestFilter {
                     throw new Exception("Token has expired");
                 }
 
+                // Set custom SecurityContext
+                SecurityContext customSecurityContext = new SecurityContext() {
+                    @Override
+                    public Principal getUserPrincipal() {
+                        return () -> userId;
+                    }
+
+                    @Override
+                    public boolean isUserInRole(String requiredRole) {
+                        return role != null && role.equalsIgnoreCase(requiredRole);
+                    }
+
+                    @Override
+                    public boolean isSecure() {
+                        return currentSecurityContext != null && currentSecurityContext.isSecure();
+                    }
+
+                    @Override
+                    public String getAuthenticationScheme() {
+                        return "Bearer";
+                    }
+                };
+
+                requestContext.setSecurityContext(customSecurityContext);
+
+                RolesAllowed rolesAllowed = resourceInfo.getResourceMethod().getAnnotation(RolesAllowed.class);
+                if (rolesAllowed == null) {
+                    rolesAllowed = resourceInfo.getResourceClass().getAnnotation(RolesAllowed.class);
+                }
+
+                if (rolesAllowed != null) {
+                    boolean authorized = false;
+                    for (String allowedRole : rolesAllowed.value()) {
+                        if (allowedRole.equalsIgnoreCase(role)) {
+                            authorized = true;
+                            break;
+                        }
+                    }
+
+                    if (!authorized) {
+                        requestContext.abortWith(Response.status(Response.Status.FORBIDDEN)
+                                .entity("Access denied: insufficient role").build());
+                    }
+                }
+
             } catch (Exception e) {
-                requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).entity("Invalid or expired token").build());
+                requestContext.abortWith(Response.status(Response.Status.FORBIDDEN)
+                        .entity("Access denied: invalid or expired token").build());
             }
         } else {
-            requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
+            requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED)
+                    .entity("Authorization token is missing").build());
         }
     }
 
-    // Method to check if the class or method requires JWT validation
-    private boolean isJWTRequired(ContainerRequestContext requestContext) {
-        // Check for @JWTRequired annotation on method or class
+    private boolean isJWTRequired() {
         return resourceInfo.getResourceMethod().isAnnotationPresent(JWTRequired.class) ||
                 resourceInfo.getResourceClass().isAnnotationPresent(JWTRequired.class);
     }

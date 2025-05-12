@@ -1,6 +1,6 @@
 package com.example.minisocial;
 
-import com.example.minisocial.Authentication.JWTFilter;
+
 import com.example.minisocial.Controller.UserManagement.UserRegistrationController;
 import com.example.minisocial.Service.UserManagement.UserRegistrationService;
 import jakarta.ws.rs.ApplicationPath;

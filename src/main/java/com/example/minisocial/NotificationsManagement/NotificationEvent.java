@@ -14,8 +14,8 @@ public class NotificationEvent implements Serializable {
     @Column(nullable = false)
     private String eventType;
 
-    private String userId;
-    private String targetUserId;
+    private long senderUserId;
+    private long targetUserId;
 
     @Column(nullable = false)
     private String message;
@@ -26,9 +26,9 @@ public class NotificationEvent implements Serializable {
     public NotificationEvent() {
     }
 
-    public NotificationEvent(String eventType, String userId, String targetUserId, String message, String timestamp) {
+    public NotificationEvent(String eventType, long senderUserId, long targetUserId, String message, String timestamp) {
         this.eventType = eventType;
-        this.userId = userId;
+        this.senderUserId = senderUserId;
         this.targetUserId = targetUserId;
         this.message = message;
         this.timestamp = timestamp;
@@ -50,19 +50,19 @@ public class NotificationEvent implements Serializable {
         this.eventType = eventType;
     }
 
-    public String getUserId() {
-        return userId;
+    public long getSenderUserId() {
+        return senderUserId;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setSenderUserId(long userId) {
+        this.senderUserId = userId;
     }
 
-    public String getTargetUserId() {
+    public long getTargetUserId() {
         return targetUserId;
     }
 
-    public void setTargetUserId(String targetUserId) {
+    public void setTargetUserId(long targetUserId) {
         this.targetUserId = targetUserId;
     }
 

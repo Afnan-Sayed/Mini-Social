@@ -17,9 +17,9 @@ public class ActivityLogController {
 
     @GET
     @Path("/{userId}")
-    public Response getActivityLog(@PathParam("userId") String userId) {
+    public Response getActivityLog(@PathParam("userId") long userId) {
         // Query the activity logs for the specific user
-            List<NotificationEvent> events = entityManager.createQuery("SELECT a FROM NotificationEvent a WHERE a.userId = :userId OR a.targetUserId = :userId", NotificationEvent.class)
+            List<NotificationEvent> events = entityManager.createQuery("SELECT a FROM NotificationEvent a WHERE a.targetUserId = :userId", NotificationEvent.class)
                 .setParameter("userId", userId)
                 .getResultList();
 
