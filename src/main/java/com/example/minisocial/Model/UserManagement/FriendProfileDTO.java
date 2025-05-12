@@ -1,25 +1,26 @@
 package com.example.minisocial.Model.UserManagement;
 
-
 import com.example.minisocial.Model.PostManagement.Post.Post;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 import java.util.List;
 
 public class FriendProfileDTO {
-    private UserDTO user;
+    private UserProfileDTO friendProfile;
     private List<Post> posts;
 
-    public FriendProfileDTO(UserDTO user, List<Post> posts) {
-        this.user = user;
+    public FriendProfileDTO(UserProfileDTO friendProfile, List<Post> posts) {
+        this.friendProfile = friendProfile;
         this.posts = posts;
     }
 
     // Getters and Setters
-    public UserDTO getUser() {
-        return user;
+    public UserProfileDTO getFriendProfile() {
+        return friendProfile;
     }
 
-    public void setUser(UserDTO user) {
-        this.user = user;
+    public void setFriendProfile(UserProfileDTO friendProfile) {
+        this.friendProfile = friendProfile;
     }
 
     public List<Post> getPosts() {

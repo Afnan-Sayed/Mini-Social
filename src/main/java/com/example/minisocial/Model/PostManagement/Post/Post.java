@@ -21,7 +21,7 @@ public class Post
     private String status;
 
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JsonManagedReference
     private List<PostContent> postContents;
 

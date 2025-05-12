@@ -1,10 +1,10 @@
 package com.example.minisocial.Controller.ConnectionManagement;
 
 import com.example.minisocial.Model.PostManagement.Post.Post;
-import com.example.minisocial.Model.UserManagement.FriendProfileDTO;
 import com.example.minisocial.Model.UserManagement.User;
 import com.example.minisocial.Model.ConnectionManagement.FriendRequest;
 import com.example.minisocial.Model.UserManagement.UserDTO;
+import com.example.minisocial.Model.UserManagement.UserProfileDTO;
 import com.example.minisocial.Service.ConnectionManagement.ConnectionService;
 
 import com.example.minisocial.Service.UserManagement.UserConnection;
@@ -51,21 +51,6 @@ public class ConnectionController {
         }
     }
 
-    // Accept a friend request
-//    @POST
-//    @Path("/acceptFriendRequest")
-//    @Consumes(MediaType.APPLICATION_JSON)
-//    public Response acceptFriendRequest(@QueryParam("requestId") Long requestId) {
-//        FriendRequest request = connectionService.findFriendRequestById(requestId);
-//
-//        if (request == null) {
-//            return Response.status(Response.Status.NOT_FOUND).build();
-//        }
-//
-//        connectionService.acceptFriendRequest(request);
-//        return Response.ok().build();
-//    }
-//
     @POST
     @Path("/acceptFriendRequest")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -153,55 +138,6 @@ public class ConnectionController {
         return Response.ok(suggestedFriends).build();
     }
 
-    // Search for users by name or email
-//    @GET
-//    @Path("/search")
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public Response searchUsers(@QueryParam("searchTerm") String searchTerm) {
-//        List<User> users = connectionService.searchUsers(searchTerm);
-//
-//        if (users.isEmpty()) {
-//            return Response.status(Response.Status.NO_CONTENT).entity("No users found").build();
-//        }
-//
-//        return Response.ok(users).build();
-//    }
-
-//    @GET
-//    @Path("/search")
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public Response searchUsers(@QueryParam("searchTerm") String searchTerm) {
-//        if (searchTerm == null || searchTerm.trim().isEmpty()) {
-//            return Response.status(Response.Status.BAD_REQUEST).entity("Search term is required.").build();
-//        }
-//
-//        List<User> users = connectionService.searchUsers(searchTerm);
-//
-//        if (users.isEmpty()) {
-//            return Response.status(Response.Status.NO_CONTENT).entity("No users found").build();
-//        }
-//
-//        return Response.ok(users).build();
-//    }
-
-
-//    @GET
-//    @Path("/search")
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public Response searchUsers(@QueryParam("searchTerm") String searchTerm) {
-//        if (searchTerm == null || searchTerm.trim().isEmpty()) {
-//            return Response.status(Response.Status.BAD_REQUEST).entity("Search term is required.").build();
-//        }
-//
-//        List<User> users = connectionService.searchUsers(searchTerm);
-//
-//        if (users.isEmpty()) {
-//            return Response.status(Response.Status.NO_CONTENT).entity("No users found").build();
-//        }
-//
-//        return Response.ok(users).build();
-//    }
-
     @GET
     @Path("/search")
     @Produces(MediaType.APPLICATION_JSON)
@@ -221,22 +157,33 @@ public class ConnectionController {
 
 
 
-//    // Helper methods to find user and friend request by ID
-//    private User findUserById(Long userId) {
-//        return connectionService.findUserById(userId);
-//    }
-//
-//    private FriendRequest findFriendRequestById(Long requestId) {
-//        return connectionService.findFriendRequestById(requestId);
-//    }
-
-
-
-
     @GET
     @Path("/view/{friendId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response viewFriendProfile(@PathParam("friendId") Long friendId, @QueryParam("email") String email) {
+        if (email == null || email.isEmpty()) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Email is required").build();
+        }
+
+        try {
+            // Fetch the friend's profile (only name, email, bio)
+            UserProfileDTO friendProfileDTO = connectionService.getFriendProfile(friendId);
+
+            if (friendProfileDTO == null) {
+                return Response.status(Response.Status.NOT_FOUND).entity("Friend profile not found").build();
+            }
+
+            return Response.ok(friendProfileDTO).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Failed to fetch friend's profile: " + e.getMessage()).build();
+        }
+    }
+
+
+    @GET
+    @Path("/friends")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getFriends(@QueryParam("email") String email) {
         if (email == null || email.isEmpty()) {
             return Response.status(Response.Status.BAD_REQUEST).entity("Email is required").build();
         }
@@ -249,24 +196,75 @@ public class ConnectionController {
                 return Response.status(Response.Status.NOT_FOUND).entity("User not found").build();
             }
 
-            // Fetch the friend's profile (assuming a method in connectionService for this)
-            UserDTO friendProfile = connectionService.getFriendProfile(friendId, currentUser);
+            // Fetch the friends' names of the current user
+            List<String> friendsNames = connectionService.getFriendsNames(currentUser);
 
-            if (friendProfile == null) {
-                return Response.status(Response.Status.NOT_FOUND).entity("Friend profile not found").build();
-            }
-
-            // Fetch all posts of this friend
-            List<Post> friendPosts = connectionService.getPostsOfFriend(friendId);
-
-            // Prepare the response DTO (a custom object combining profile and posts)
-            FriendProfileDTO friendProfileDTO = new FriendProfileDTO(friendProfile, friendPosts);
-
-            return Response.ok(friendProfileDTO).build();
+            return Response.ok(friendsNames).build();
         } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Failed to fetch friend's profile: " + e.getMessage()).build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Failed to fetch friends: " + e.getMessage()).build();
         }
     }
 
+//    @GET
+//    @Path("/friends")
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public Response viewAllFriends(@QueryParam("email") String email) {
+//        if (email == null || email.isEmpty()) {
+//            return Response.status(Response.Status.BAD_REQUEST).entity("Email is required").build();
+//        }
+//
+//        try {
+//            // Fetch the current user based on email
+//            User currentUser = userService.getUserByEmail(email);
+//
+//            if (currentUser == null) {
+//                return Response.status(Response.Status.NOT_FOUND).entity("User not found").build();
+//            }
+//
+//            // Fetch all friends' names of the user
+//            List<String> friendsNames = connectionService.getAllFriendsNames(currentUser.getId());
+//
+//            if (friendsNames == null || friendsNames.isEmpty()) {
+//                return Response.status(Response.Status.NOT_FOUND).entity("No friends found").build();
+//            }
+//
+//            return Response.ok(friendsNames).build();
+//        } catch (Exception e) {
+//            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Failed to fetch friends: " + e.getMessage()).build();
+//        }
+//    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // GET /posts/friend/{requesterId}/{friendId}
+    @GET
+    @Path("/friend/{requesterId}/{friendId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getFriendPosts(@PathParam("requesterId") Long requesterId,
+                                   @PathParam("friendId") Long friendId) {
+        try {
+            List<Post> posts = connectionService.getFriendPosts(requesterId, friendId);
+            return Response.ok(posts).build();
+        } catch (SecurityException e) {
+            return Response.status(Response.Status.FORBIDDEN)
+                    .entity("You are not allowed to view this user's posts.")
+                    .build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Error retrieving posts.")
+                    .build();
+        }
+    }
 }
 

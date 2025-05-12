@@ -13,7 +13,7 @@ public class PostContent
     private String type;  //image,link, text.
     private String contentValue; //URL or text
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "post_id")
     @JsonBackReference
     private Post post;

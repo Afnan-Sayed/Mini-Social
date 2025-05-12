@@ -1,6 +1,7 @@
 package com.example.minisocial.Controller.PostManagement;
 
 import com.example.minisocial.Model.PostManagement.Post.Post;
+import com.example.minisocial.Model.UserManagement.PostDTO;
 import com.example.minisocial.Service.PostManagement.Post.PostCreator;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -15,14 +16,35 @@ public class PostCreationController
     @Inject
     private PostCreator postCreator;
 
+//    @POST
+//    @Path("/createPost")
+//    public Response createPost(Post post, @QueryParam("email") String email)
+//    {
+//        try {
+//            // Call PostCreator service to create the post
+//            Post createdPost = postCreator.createPost(email, post.getStatus(), post.getPostContents());
+//            return Response.status(Response.Status.CREATED).entity(createdPost).build();
+//        } catch (IllegalArgumentException e) {
+//            return Response.status(Response.Status.BAD_REQUEST).entity("Failed to create post: " + e.getMessage()).build();
+//        } catch (SecurityException e) {
+//            return Response.status(Response.Status.FORBIDDEN).entity("Permission denied: " + e.getMessage()).build();
+//        } catch (Exception e) {
+//            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Unexpected error: " + e.getMessage()).build();
+//        }
+//    }
+
+
     @POST
     @Path("/createPost")
-    public Response createPost(Post post, @QueryParam("email") String email)
-    {
+    public Response createPost(Post post, @QueryParam("email") String email) {
         try {
             // Call PostCreator service to create the post
             Post createdPost = postCreator.createPost(email, post.getStatus(), post.getPostContents());
-            return Response.status(Response.Status.CREATED).entity(createdPost).build();
+
+            // Return the post with only necessary fields
+            PostDTO postDTO = new PostDTO(createdPost.getPostId(), createdPost.getStatus(), createdPost.getAuthorDTO(), createdPost.getPostContents());
+
+            return Response.status(Response.Status.CREATED).entity(postDTO).build();
         } catch (IllegalArgumentException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity("Failed to create post: " + e.getMessage()).build();
         } catch (SecurityException e) {
