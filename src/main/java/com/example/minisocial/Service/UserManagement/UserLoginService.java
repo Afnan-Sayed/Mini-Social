@@ -50,9 +50,11 @@ public class UserLoginService {
     private String generateJwtToken(User user) {
         return Jwts.builder()
                 .setSubject(user.getEmail())
-                .setExpiration(new Date(System.currentTimeMillis() + 3600000))
+                .claim("role", user.getRole())  // Add the role to the token
+                .setExpiration(new Date(System.currentTimeMillis() + 3600000)) // 1 hour expiration
                 .signWith(SignatureAlgorithm.HS512, Base64.getDecoder().decode(SECRET_KEY)) // Decode the Base64 key
                 .compact();
     }
+
 }
 

@@ -8,7 +8,10 @@ import jakarta.jms.JMSException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 
-@MessageDriven(mappedName = "queue/NotificationQueue")
+@MessageDriven(activationConfig = {
+        @jakarta.ejb.ActivationConfigProperty(propertyName = "destinationLookup", propertyValue = "java:/jms/queue/MyTrelloQueue"),
+        @jakarta.ejb.ActivationConfigProperty(propertyName = "destinationType", propertyValue = "jakarta.jms.Queue")
+})
 public class NotificationMDB implements MessageListener {
 
     @PersistenceContext(unitName = "myPersistenceUnit")
