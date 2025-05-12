@@ -1,6 +1,8 @@
 package com.example.minisocial.Model.PostManagement.Post;
 
+import com.example.minisocial.Model.GroupsManagement.Group;
 import com.example.minisocial.Model.UserManagement.User;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.util.List;
@@ -25,12 +27,18 @@ public class Post
     @JsonManagedReference
     private List<PostContent> postContents;
 
-    public Post(User author, String authorName, String status, List<PostContent> postContents)
+    @ManyToOne
+    @JoinColumn(name = "group_id", nullable = true)
+    @JsonBackReference
+    private Group group;
+
+    public Post(User author, String authorName, String status, List<PostContent> postContents, Group group)
     {
         this.author = author;
         this.authorName = authorName;
         this.status = status;
         this.postContents = postContents;
+        this.group = group;
     }
 
     public Post() {}
@@ -46,6 +54,12 @@ public class Post
 
     public User getAuthor() { return author; }
     public void setAuthor(User author) { this.author = author; }
+
+    public Group getGroup() { return group; }
+
+    public Long getGroupId() {
+        return (group != null) ? group.getId() : null;
+    }
 
     public String getAuthorName() { return authorName; }
     public void setAuthorName(String authorName) { this.authorName = authorName; }

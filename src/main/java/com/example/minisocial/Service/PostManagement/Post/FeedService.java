@@ -10,25 +10,46 @@
 //import java.util.List;
 //
 //@Stateless
-//public class FeedService {
+//public class FeedService
+//{
 //    @PersistenceContext(unitName = "myPersistenceUnit")
 //    private EntityManager entityManager;
 //
 //    @Inject
 //    private UserService userService;
 //
-//    public List<Post> getFeed(String loggedInEmail) {
+//    public List<Post> getFeed(String loggedInEmail)
+//    {
 //        User user = userService.getUserByEmail(loggedInEmail);
 //
-//        //top 3 posts of the logged-in user and their friends using a native SQL query with TOP 3
-//        String query = "SELECT TOP 3 p.* FROM Post p " +
-//                "WHERE p.authorID IN (SELECT f.friend_id FROM Friendship f WHERE f.user_id = :userId) " +
-//                "ORDER BY p.postID DESC"; // You can adjust this ordering criterion
+//        //top 3 posts of the user
+//        String userQuery =
+//                "SELECT p FROM Post p " +
+//                "WHERE p.author.id = :userId " +
+//                "ORDER BY p.postID DESC";
 //
-//        List<Post> topPosts = entityManager.createNativeQuery(query, Post.class)
-//                .setParameter("userId", user.getUserId()) // Use the logged-in user's ID
+//        List<Post> topPosts = entityManager.createQuery(userQuery, Post.class)
+//                .setParameter("userId", user.getId())
+//                .setMaxResults(3)
 //                .getResultList();
 //
-//        return topPosts;
+//        //get list of friends
+//        String friendsQuery = "SELECT f.friend_id FROM Friendship f WHERE f.user_id = :userId";
+//        List<Long> friendsIds = entityManager.createQuery(friendsQuery, Long.class)
+//                .setParameter("userId", user.getId())
+//                .getResultList();
+//
+//        //top 3 posts for each friend
+//        for (Long friendId : friendsIds)
+//        {
+//            String friendPostsQuery = "SELECT p FROM Post p WHERE p.author.id = :friendId ORDER BY p.postID DESC";
+//            List<Post> friendPosts = entityManager.createQuery(friendPostsQuery, Post.class)
+//                    .setParameter("friendId", friendId)
+//                    .setMaxResults(3)
+//                    .getResultList();
+//            topPosts.addAll(friendPosts);
+//        }
+//
+//        return topPosts;  //combined list from user and friends
 //    }
 //}

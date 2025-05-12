@@ -18,11 +18,18 @@ public class PostCreationController {
 
     @POST
     @Path("/createPost")
-    public Response createPost(Post post, @QueryParam("email") String email) {
+    public Response createPost(Post post, @QueryParam("email") String email, @QueryParam("groupId") Long groupId) {
         try {
-            Post createdPost = postCreator.createPost(email, post.getStatus(), post.getPostContents());
+            Post createdPost = postCreator.createPost(email, post.getStatus(), post.getPostContents(),  groupId);
 
-            PostResponse response = new PostResponse(createdPost.getAuthorName(), createdPost.getStatus(), createdPost.getPostContents());
+            PostResponse response = new PostResponse
+            (
+                            createdPost.getAuthorName(),
+                            createdPost.getStatus(),
+                            createdPost.getPostContents(),
+                            createdPost.getGroup() != null ? createdPost.getGroup().getId() : null,
+                            createdPost.getPostId()
+            );
 
             return Response.status(Response.Status.CREATED).entity(response).build();
         } catch (IllegalArgumentException e) {

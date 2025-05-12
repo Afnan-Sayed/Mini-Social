@@ -2,20 +2,22 @@ package com.example.minisocial.Model.PostManagement.Post;
 
 import java.util.List;
 
-public class PostResponse {
-
+public class PostResponse
+{
     private String authorName;
     private String status;
-    private List<PostContent> postContents;  // Include post contents
+    private List<PostContent> postContents;
+    private Long groupid;
+    private Long postID;
 
-    // Constructor
-    public PostResponse(String authorName, String status, List<PostContent> postContents) {
+    public PostResponse(String authorName, String status, List<PostContent> postContents, Long groupid, Long postID) {
         this.authorName = authorName;
         this.status = status;
         this.postContents = postContents;
+        this.groupid = groupid;
+        this.postID = postID;
     }
-
-    // Getters and Setters
+    //getters and setters
     public String getAuthorName() {
         return authorName;
     }

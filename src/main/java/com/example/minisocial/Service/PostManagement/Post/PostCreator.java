@@ -1,5 +1,6 @@
 package com.example.minisocial.Service.PostManagement.Post;
 
+import com.example.minisocial.Model.GroupsManagement.Group;
 import com.example.minisocial.Model.PostManagement.Post.Post;
 import com.example.minisocial.Model.PostManagement.Post.PostContent;
 import com.example.minisocial.Model.UserManagement.User;
@@ -19,7 +20,7 @@ public class PostCreator
     @Inject
     private UserService userService;
 
-    public Post createPost(String loggedInEmail, String status, List<PostContent> postContents)
+    public Post createPost(String loggedInEmail, String status, List<PostContent> postContents, Long groupId)
     {
         if (loggedInEmail == null || loggedInEmail.isEmpty()) {
             throw new IllegalArgumentException("Email is required");
@@ -36,9 +37,13 @@ public class PostCreator
             throw new IllegalArgumentException("Post contents cannot be null or empty");
         }
 
-        Post post = new Post(user, user.getName(), status, postContents);
+        Group group = null;
+        if (groupId != null) {
+            group = entityManager.find(Group.class, groupId);
+        }
 
-        // Persist each post content and link it to the post
+        Post post = new Post(user, user.getName(), status, postContents, group);
+
         for (PostContent content : postContents) {
             content.linkToPost(post);
             entityManager.persist(content);
