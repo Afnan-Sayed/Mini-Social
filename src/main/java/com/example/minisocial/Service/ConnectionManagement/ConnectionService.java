@@ -255,9 +255,6 @@ public class ConnectionService {
 
 
 
-
-
-
     // Check if two users are friends using native SQL (user_user is not an entity)
     public boolean areFriends(Long userId, Long friendId) {
         String sql = "SELECT COUNT(*) FROM user_user WHERE user_id = ?1 AND friends_id = ?2";

@@ -1,8 +1,11 @@
 package com.example.minisocial.Model.PostManagement.Post;
 
+import com.example.minisocial.Model.GroupsManagement.Group;
 import com.example.minisocial.Model.UserManagement.User;
-import com.example.minisocial.Model.UserManagement.UserDTOForPost;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.*;
 import java.util.List;
 //JPA entity bean
@@ -19,17 +22,24 @@ public class Post
     @JoinColumn(name = "authorID")
     private User author;
     private String status;
+    private String authorName;
 
 
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-    @JsonManagedReference
+    @JsonbTransient
     private List<PostContent> postContents;
 
-    public Post(User author, String status, List<PostContent> postContents)
+    @ManyToOne
+    @JoinColumn(name = "group_id", nullable = true)
+    private Group group;
+
+    public Post(User author, String authorName, String status, List<PostContent> postContents, Group group)
     {
         this.author = author;
+        this.authorName = authorName;
         this.status = status;
         this.postContents = postContents;
+        this.group = group;
     }
 
     public Post() {}
@@ -46,7 +56,12 @@ public class Post
     public User getAuthor() { return author; }
     public void setAuthor(User author) { this.author = author; }
 
-    public UserDTOForPost getAuthorDTO() {
-        return new UserDTOForPost(author.getName(), author.getEmail(), author.getBio());
+    public Group getGroup() { return group; }
+
+    public Long getGroupId() {
+        return (group != null) ? group.getId() : null;
     }
+
+    public String getAuthorName() { return authorName; }
+    public void setAuthorName(String authorName) { this.authorName = authorName; }
 }
