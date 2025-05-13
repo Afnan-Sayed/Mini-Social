@@ -103,6 +103,8 @@ public class PostCreator
             content.linkToPost(post);
             entityManager.persist(content);
         }
+        post.setNumOfComments(0);
+        post.setNumOfComments(0);
 
         // Persist the post object in the database
         entityManager.persist(post);

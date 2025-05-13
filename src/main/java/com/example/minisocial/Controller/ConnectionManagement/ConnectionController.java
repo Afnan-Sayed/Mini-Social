@@ -1,6 +1,7 @@
 package com.example.minisocial.Controller.ConnectionManagement;
 
 import com.example.minisocial.Model.PostManagement.Post.Post;
+import com.example.minisocial.Model.PostManagement.Post.PostResponse;
 import com.example.minisocial.Model.UserManagement.User;
 import com.example.minisocial.Model.ConnectionManagement.FriendRequest;
 import com.example.minisocial.Model.UserManagement.UserDTO;
@@ -14,6 +15,7 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -205,48 +207,6 @@ public class ConnectionController {
         }
     }
 
-//    @GET
-//    @Path("/friends")
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public Response viewAllFriends(@QueryParam("email") String email) {
-//        if (email == null || email.isEmpty()) {
-//            return Response.status(Response.Status.BAD_REQUEST).entity("Email is required").build();
-//        }
-//
-//        try {
-//            // Fetch the current user based on email
-//            User currentUser = userService.getUserByEmail(email);
-//
-//            if (currentUser == null) {
-//                return Response.status(Response.Status.NOT_FOUND).entity("User not found").build();
-//            }
-//
-//            // Fetch all friends' names of the user
-//            List<String> friendsNames = connectionService.getAllFriendsNames(currentUser.getId());
-//
-//            if (friendsNames == null || friendsNames.isEmpty()) {
-//                return Response.status(Response.Status.NOT_FOUND).entity("No friends found").build();
-//            }
-//
-//            return Response.ok(friendsNames).build();
-//        } catch (Exception e) {
-//            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Failed to fetch friends: " + e.getMessage()).build();
-//        }
-//    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     // GET /posts/friend/{requesterId}/{friendId}
     @GET
     @Path("/friend/{requesterId}/{friendId}")
@@ -255,7 +215,22 @@ public class ConnectionController {
                                    @PathParam("friendId") Long friendId) {
         try {
             List<Post> posts = connectionService.getFriendPosts(requesterId, friendId);
-            return Response.ok(posts).build();
+            List<PostResponse> postResponses = new ArrayList<>();
+            for (Post post : posts) {
+                // Create PostResponse from each Post
+                PostResponse postResponse = new PostResponse(
+                        post.getAuthorName(),
+                        post.getStatus(),
+                        post.getPostContents(),
+                        post.getGroup() != null ? post.getGroup().getId() : null,
+                        post.getPostId(),
+                        post.getAuthor().getBio(),
+                        post.getNumOfLikes(),
+                        post.getNumOfComments()
+                );
+                postResponses.add(postResponse);
+            }
+            return Response.status(Response.Status.OK).entity(postResponses).build();
         } catch (SecurityException e) {
             return Response.status(Response.Status.FORBIDDEN)
                     .entity("You are not allowed to view this user's posts.")
@@ -267,4 +242,3 @@ public class ConnectionController {
         }
     }
 }
-

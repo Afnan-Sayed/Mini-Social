@@ -28,7 +28,10 @@ public class PostCreationController {
                             createdPost.getStatus(),
                             createdPost.getPostContents(),
                             createdPost.getGroup() != null ? createdPost.getGroup().getId() : null,
-                            createdPost.getPostId()
+                            createdPost.getPostId(),
+                            createdPost.getAuthor().getBio(),
+                            createdPost.getNumOfLikes(),
+                            createdPost.getNumOfComments()
                     );
 
             return Response.status(Response.Status.CREATED).entity(response).build();

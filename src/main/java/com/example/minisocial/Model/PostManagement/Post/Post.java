@@ -23,6 +23,8 @@ public class Post
     private User author;
     private String status;
     private String authorName;
+    private int NumOfLikes;
+    private int NumOfComments;
 
 
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
@@ -64,4 +66,20 @@ public class Post
 
     public String getAuthorName() { return authorName; }
     public void setAuthorName(String authorName) { this.authorName = authorName; }
+
+    public int getNumOfComments() {
+        return NumOfComments;
+    }
+
+    public void setNumOfComments(int numOfComments) {
+        NumOfComments = numOfComments;
+    }
+
+    public int getNumOfLikes() {
+        return NumOfLikes;
+    }
+
+    public void setNumOfLikes(int numOfLikes) {
+        NumOfLikes = numOfLikes;
+    }
 }
