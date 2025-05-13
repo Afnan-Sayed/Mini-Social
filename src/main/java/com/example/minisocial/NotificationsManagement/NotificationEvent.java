@@ -13,8 +13,8 @@ public class NotificationEvent implements Serializable {
 
     @Column(nullable = false)
     private String eventType;
-
-    private long senderUserId;
+    @Column(nullable = true)
+    private Long senderUserId;
     private long targetUserId;
 
     @Column(nullable = false)
@@ -26,7 +26,7 @@ public class NotificationEvent implements Serializable {
     public NotificationEvent() {
     }
 
-    public NotificationEvent(String eventType, long senderUserId, long targetUserId, String message, String timestamp) {
+    public NotificationEvent(String eventType, Long senderUserId, long targetUserId, String message, String timestamp) {
         this.eventType = eventType;
         this.senderUserId = senderUserId;
         this.targetUserId = targetUserId;

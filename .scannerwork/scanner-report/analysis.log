@@ -1,0 +1,41 @@
+SonarQube plugins:
+  - Python Code Quality and Security 3.4.1.8066 (python)
+  - CSS Code Quality and Security 1.4.2.2002 (cssfamily)
+  - Go Code Quality and Security 1.8.3.2219 (go)
+  - JaCoCo 1.1.1.1157 (jacoco)
+  - Kotlin Code Quality and Security 1.8.3.2219 (kotlin)
+  - JavaScript/TypeScript Code Quality and Security 7.4.4.15624 (javascript)
+  - Ruby Code Quality and Security 1.8.3.2219 (ruby)
+  - Scala Code Quality and Security 1.8.3.2219 (sonarscala)
+  - C# Code Quality and Security 8.22.0.31243 (csharp)
+  - Java Code Quality and Security 6.15.1.26025 (java)
+  - HTML Code Quality and Security 3.4.0.2754 (web)
+  - Flex Code Quality and Security 2.6.1.2564 (flex)
+  - XML Code Quality and Security 2.2.0.2973 (xml)
+  - PHP Code Quality and Security 3.17.0.7439 (php)
+  - VB.NET Code Quality and Security 8.22.0.31243 (vbnet)
+Global server settings:
+  - sonar.core.id=BF41A1F2-AZaCm3Dgs1D5ebi9McSh
+  - sonar.core.startTime=2025-05-09T00:49:51+0200
+  - sonar.forceAuthentication=true
+Project server settings:
+Project scanner properties:
+  - sonar.host.url=http://localhost:9000
+  - sonar.java.binaries=target/classes
+  - sonar.login=******
+  - sonar.projectBaseDir=C:\Users\20115\Mini-Social
+  - sonar.projectKey=Mini-Social
+  - sonar.projectName=Mini-Social
+  - sonar.projectVersion=1.0
+  - sonar.scanner.apiBaseUrl=http://localhost:9000/api/v2
+  - sonar.scanner.app=ScannerCLI
+  - sonar.scanner.appVersion=7.1.0.4889
+  - sonar.scanner.arch=amd64
+  - sonar.scanner.bootstrapStartTime=1746744787462
+  - sonar.scanner.home=C:\Users\20115\Downloads\sonar-scanner-cli-7.1.0.4889-windows-x64\sonar-scanner-7.1.0.4889-windows-x64\bin\..
+  - sonar.scanner.os=windows
+  - sonar.scanner.wasEngineCacheHit=true
+  - sonar.sources=src/main/java
+  - sonar.verbose=true
+  - sonar.working.directory=C:\Users\20115\Mini-Social\.scannerwork
+  - sonar.ws.timeout=60

@@ -3,6 +3,7 @@ package com.example.minisocial.Model.ConnectionManagement;
 import com.example.minisocial.Model.UserManagement.User;
 import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class FriendRequest {
@@ -13,12 +14,12 @@ public class FriendRequest {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "sender_id")
-    @JsonbTransient
+    @JsonIgnore
     private User sender;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "receiver_id")
-    @JsonbTransient
+    @JsonIgnore
     private User receiver;
 
     private String status;  // Pending, Accepted, Rejected

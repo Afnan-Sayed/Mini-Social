@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import java.util.List;
 import jakarta.json.bind.annotation.JsonbTransient;
 import com.example.minisocial.Model.ConnectionManagement.FriendRequest;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class User {
@@ -19,17 +20,17 @@ public class User {
 
 
     @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    @JsonbTransient
+    @JsonIgnore
     private List<FriendRequest> sentRequests;  // Sent friend requests
 
     //    @OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL, orphanRemoval = true)
 //    @JsonbTransient
     @OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    @JsonbTransient
+    @JsonIgnore
     private List<FriendRequest> receivedRequests;  // Received friend requests
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JsonbTransient
+    @JsonIgnore
     private List<com.example.minisocial.Model.UserManagement.User> friends;  // List of friends
 
     // Getters and setters

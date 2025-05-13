@@ -1,6 +1,7 @@
 package com.example.minisocial.Controller.UserManagement;
 
 
+import com.example.minisocial.Authentication.JWTRequired;
 import com.example.minisocial.Model.UserManagement.User;
 import com.example.minisocial.Service.UserManagement.UserLoginService;
 import com.example.minisocial.Service.UserManagement.UserRegistrationService;
@@ -58,7 +59,7 @@ public class UserController {
         }
     }
 
-
+    @JWTRequired
     @PUT
     @Path("/{user_id}/update")
     public Response updateUserProfile(@PathParam("user_id") long userId, User updatedUser)

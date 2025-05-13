@@ -1,6 +1,5 @@
 package com.example.minisocial.Service.ConnectionManagement;
 
-//import com.example.minisocial.Model.PostManagement.Post.Post;
 import com.example.minisocial.Model.UserManagement.User;
 import com.example.minisocial.Model.ConnectionManagement.FriendRequest;
 import com.example.minisocial.NotificationsManagement.NotificationEvent;
@@ -25,9 +24,8 @@ public class ConnectionService {
     public void sendFriendRequest(User sender, User receiver) {
         // Check if sender and receiver are already friends
         if (sender.getFriends().contains(receiver)) {
-            throw new IllegalStateException("You are already friends with this user.");
+            throw new IllegalStateException(sender.getName() + " and " + receiver.getName() + " are already friends.");
         }
-
         // Check if a pending request exists between them
         List<FriendRequest> pendingRequests = em.createQuery(
                         "SELECT fr FROM FriendRequest fr WHERE (fr.sender = :sender AND fr.receiver = :receiver) OR (fr.sender = :receiver AND fr.receiver = :sender) AND fr.status = 'Pending'",
@@ -45,20 +43,18 @@ public class ConnectionService {
         request.setSender(sender);
         request.setReceiver(receiver);
         request.setStatus("Pending");
-        String eventMessage = sender.getName() + " has sent you a friend request.";
+        em.persist(request);
+        // Create and persist the new friend request
+        String eventMessage = sender.getName()+" has sent you a friend request.";
         NotificationEvent event = new NotificationEvent(
-                "FriendRequest",  // Event Type
-                sender.getId(),         // Sender (who triggered the event)
-                receiver.getId(),      // Target (who will receive the notification)
-                eventMessage,     // Event message
-                new java.util.Date().toString()  // Timestamp
+                "FriendRequest",
+                sender.getId(),
+                receiver.getId(),
+                eventMessage,
+                new java.util.Date().toString()
         );
-
-        // Send the event to the JMS queue using the producer
         NotificationProducer producer = new NotificationProducer();
         producer.sendNotification(event);
-
-        em.persist(request);
     }
 
     // Accept a friend request
@@ -136,28 +132,6 @@ public class ConnectionService {
         return user.getFriends(); // Return the list of friends of the user
     }
 
-//        public List<User> searchUsers(String searchTerm) {
-//        // Search for users whose name or email matches the searchTerm
-//        return em.createQuery("SELECT u FROM User u WHERE u.name LIKE :searchTerm OR u.email LIKE :searchTerm", User.class)
-//                .setParameter("searchTerm", "%" + searchTerm + "%")
-//                .getResultList();
-//    }
-
-//@Transactional
-//public List<User> searchUsers(String searchTerm) {
-//    // Check if the search term is empty
-//    if (searchTerm == null || searchTerm.trim().isEmpty()) {
-//        return new ArrayList<>(); // Return empty list if no search term
-//    }
-//
-//    // Query to find users based on name or email
-//    return em.createQuery("SELECT u FROM User u WHERE u.name LIKE :searchTerm OR u.email LIKE :searchTerm", User.class)
-//            .setParameter("searchTerm", "%" + searchTerm + "%")  // Use wildcard for partial matches
-//            .getResultList();
-//}
-//
-
-
     @Transactional
     public List<UserDTO> searchUsers(String searchTerm) {
         if (searchTerm == null || searchTerm.trim().isEmpty()) {
@@ -201,19 +175,5 @@ public class ConnectionService {
         return new UserDTO(friend.getId(), friend.getName(), friend.getEmail(), friend.getBio());
     }
 
-//    @Transactional
-//    public List<Post> getPostsOfFriend(Long friendId) {
-//        // Fetch the user (friend) based on the friendId
-//        User friend = em.find(User.class, friendId);
-//
-//        if (friend == null) {
-//            throw new IllegalArgumentException("Friend not found");
-//        }
-//
-//        // Return all posts of this friend
-//        return em.createQuery("SELECT p FROM Post p WHERE p.author = :author", Post.class)
-//                .setParameter("author", friend)
-//                .getResultList();
-//    }
 
 }
