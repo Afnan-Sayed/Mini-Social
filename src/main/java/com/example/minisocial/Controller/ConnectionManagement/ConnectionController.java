@@ -1,18 +1,23 @@
 package com.example.minisocial.Controller.ConnectionManagement;
 
-import com.example.minisocial.Authentication.JWTRequired;
+import com.example.minisocial.Model.PostManagement.Post.Post;
+import com.example.minisocial.Model.PostManagement.Post.PostResponse;
 import com.example.minisocial.Model.UserManagement.User;
 import com.example.minisocial.Model.ConnectionManagement.FriendRequest;
 import com.example.minisocial.Model.UserManagement.UserDTO;
+import com.example.minisocial.Model.UserManagement.UserProfileDTO;
 import com.example.minisocial.Service.ConnectionManagement.ConnectionService;
 
 import com.example.minisocial.Service.UserManagement.UserConnection;
+import com.example.minisocial.Service.UserManagement.UserService;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
+import java.util.ArrayList;
 import java.util.List;
+
 
 
 @Path("/connections")
@@ -24,6 +29,8 @@ public class ConnectionController {
     @Inject
     private UserConnection userConnection;
 
+    @Inject
+    private UserService userService;
 
 
     // Send a friend request
@@ -40,7 +47,7 @@ public class ConnectionController {
 
         try {
             connectionService.sendFriendRequest(sender, receiver);
-            return Response.ok().entity(sender.getName() + " has sent to " + receiver.getName() + " friend request").build();
+            return Response.ok().build();
         } catch (IllegalStateException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
@@ -62,7 +69,7 @@ public class ConnectionController {
         }
 
         connectionService.acceptFriendRequest(request);
-        return Response.ok().entity(request.getReceiver().getName() + " has accepted " + request.getSender().getName() + "'s friend request").build();
+        return Response.ok().build();
     }
 
     // Reject a friend request
@@ -78,7 +85,7 @@ public class ConnectionController {
 
         // Reject the friend request
         connectionService.rejectFriendRequest(request);
-        return Response.ok().entity(request.getReceiver().getName() + " has rejected " + request.getSender().getName() + "'s friend request").build();
+        return Response.ok().build();
     }
 
     // Get pending friend requests
@@ -150,4 +157,88 @@ public class ConnectionController {
         return Response.ok(users).build();
     }
 
+
+
+    @GET
+    @Path("/view/{friendId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response viewFriendProfile(@PathParam("friendId") Long friendId, @QueryParam("email") String email) {
+        if (email == null || email.isEmpty()) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Email is required").build();
+        }
+
+        try {
+            // Fetch the friend's profile (only name, email, bio)
+            UserProfileDTO friendProfileDTO = connectionService.getFriendProfile(friendId);
+
+            if (friendProfileDTO == null) {
+                return Response.status(Response.Status.NOT_FOUND).entity("Friend profile not found").build();
+            }
+
+            return Response.ok(friendProfileDTO).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Failed to fetch friend's profile: " + e.getMessage()).build();
+        }
+    }
+
+
+    @GET
+    @Path("/friends")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getFriends(@QueryParam("email") String email) {
+        if (email == null || email.isEmpty()) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Email is required").build();
+        }
+
+        try {
+            // Fetch the current user based on the email
+            User currentUser = userService.getUserByEmail(email);
+
+            if (currentUser == null) {
+                return Response.status(Response.Status.NOT_FOUND).entity("User not found").build();
+            }
+
+            // Fetch the friends' names of the current user
+            List<String> friendsNames = connectionService.getFriendsNames(currentUser);
+
+            return Response.ok(friendsNames).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Failed to fetch friends: " + e.getMessage()).build();
+        }
+    }
+
+    // GET /posts/friend/{requesterId}/{friendId}
+    @GET
+    @Path("/friend/{requesterId}/{friendId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getFriendPosts(@PathParam("requesterId") Long requesterId,
+                                   @PathParam("friendId") Long friendId) {
+        try {
+            List<Post> posts = connectionService.getFriendPosts(requesterId, friendId);
+            List<PostResponse> postResponses = new ArrayList<>();
+            for (Post post : posts) {
+                // Create PostResponse from each Post
+                PostResponse postResponse = new PostResponse(
+                        post.getAuthorName(),
+                        post.getStatus(),
+                        post.getPostContents(),
+                        post.getGroup() != null ? post.getGroup().getId() : null,
+                        post.getPostId(),
+                        post.getAuthor().getBio(),
+                        post.getNumOfLikes(),
+                        post.getNumOfComments()
+                );
+                postResponses.add(postResponse);
+            }
+            return Response.status(Response.Status.OK).entity(postResponses).build();
+        } catch (SecurityException e) {
+            return Response.status(Response.Status.FORBIDDEN)
+                    .entity("You are not allowed to view this user's posts.")
+                    .build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Error retrieving posts.")
+                    .build();
+        }
+    }
 }

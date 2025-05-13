@@ -36,15 +36,6 @@ public class FeedService
                 .setParameter("userId", user.getId())
                 .setMaxResults(3)
                 .getResultList();
-/*
-String sql = "SELECT COUNT(*) FROM user_user WHERE user_id = ?1 AND friends_id = ?2";
-        Number count = (Number) em.createNativeQuery(sql)
-                .setParameter(1, userId)
-                .setParameter(2, friendId)
-                .getSingleResult();
- */
-        //get list of friends
-
 
         List<User> friends = cs.getAllFriends(user);
 
