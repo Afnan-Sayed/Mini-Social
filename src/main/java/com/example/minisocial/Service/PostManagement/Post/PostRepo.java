@@ -45,7 +45,8 @@ public class PostRepo
                 //check if the logged-in user is the author of the post
                 if (author != null && author.getEmail().equals(loggedInEmail)) {
                     entityManager.remove(post);
-                } else {
+                }
+                else {
                     throw new SecurityException("User is not allowed to delete this post");
                 }
             }
@@ -78,18 +79,17 @@ public class PostRepo
                     //already in context
                     return entityManager.merge(post);
                 }
-                //he is an admin
-                else
-                {
-                    post.setStatus(newStatus);
-                    post.setPostContents(newContents);
-                    return entityManager.merge(post);
+                else {
+                    //not the author
+                    throw new SecurityException("User is not allowed to update this post.");
                 }
-
             }
-            else {
-                //not the author
-                throw new SecurityException("User is not allowed to update this post.");
+            //he is an admin
+            else
+            {
+                post.setStatus(newStatus);
+                post.setPostContents(newContents);
+                return entityManager.merge(post);
             }
         }
         else {
