@@ -5,6 +5,8 @@ import com.example.minisocial.Model.UserManagement.FriendProfileDTO;
 import com.example.minisocial.Model.UserManagement.User;
 import com.example.minisocial.Model.ConnectionManagement.FriendRequest;
 import com.example.minisocial.Model.UserManagement.UserProfileDTO;
+import com.example.minisocial.NotificationsManagement.NotificationEvent;
+import com.example.minisocial.NotificationsManagement.NotificationProducer;
 import com.example.minisocial.Service.UserManagement.UserService;
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
@@ -54,8 +56,20 @@ public class ConnectionService {
         request.setSender(sender);
         request.setReceiver(receiver);
         request.setStatus("Pending");
-
         em.persist(request);
+
+        // Create and persist the new friend request
+        String eventMessage = sender.getName()+" has sent you a friend request.";
+        NotificationEvent event = new NotificationEvent(
+                "FriendRequest",
+                sender.getId(),
+                receiver.getId(),
+                eventMessage,
+                new java.util.Date().toString()
+        );
+        NotificationProducer producer = new NotificationProducer();
+        producer.sendNotification(event);
+
     }
 
     // Accept a friend request

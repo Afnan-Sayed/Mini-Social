@@ -4,6 +4,8 @@ import com.example.minisocial.Model.PostManagement.Engagement.Comment;
 import com.example.minisocial.Model.PostManagement.Engagement.Like;
 import com.example.minisocial.Model.PostManagement.Post.Post;
 import com.example.minisocial.Model.UserManagement.User;
+import com.example.minisocial.NotificationsManagement.NotificationEvent;
+import com.example.minisocial.NotificationsManagement.NotificationProducer;
 import com.example.minisocial.Service.ConnectionManagement.ConnectionService;
 import com.example.minisocial.Service.UserManagement.UserService;
 import jakarta.ejb.Stateless;
@@ -52,6 +54,16 @@ public class EngRepo
         int likes=post.getNumOfLikes()+1;
         post.setNumOfLikes(likes);
         entityManager.persist(like);
+        String eventMessage =user.getName()+" has liked your post.";
+        NotificationEvent event = new NotificationEvent(
+                "LikeAdded",
+                user.getId(),
+                post.getAuthor().getId(),
+                eventMessage,
+                new java.util.Date().toString()
+        );
+        NotificationProducer producer = new NotificationProducer();
+        producer.sendNotification(event);
         return "Like added";
     }
 
@@ -77,6 +89,16 @@ public class EngRepo
         entityManager.persist(comment);
         int comments=post.getNumOfComments()+1;
         post.setNumOfComments(comments);
+        String eventMessage =user.getName()+" has commented on your post.";
+        NotificationEvent event = new NotificationEvent(
+                "CommentAdded",
+                user.getId(),
+                post.getAuthor().getId(),
+                eventMessage,
+                new java.util.Date().toString()
+        );
+        NotificationProducer producer = new NotificationProducer();
+        producer.sendNotification(event);
         return "comment added";
     }
 }
