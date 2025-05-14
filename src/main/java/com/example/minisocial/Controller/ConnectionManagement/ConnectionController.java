@@ -1,5 +1,6 @@
 package com.example.minisocial.Controller.ConnectionManagement;
 
+import com.example.minisocial.Authentication.JWTRequired;
 import com.example.minisocial.Model.PostManagement.Post.Post;
 import com.example.minisocial.Model.PostManagement.Post.PostResponse;
 import com.example.minisocial.Model.UserManagement.User;
@@ -19,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-
+@JWTRequired
 @Path("/connections")
 public class ConnectionController {
 

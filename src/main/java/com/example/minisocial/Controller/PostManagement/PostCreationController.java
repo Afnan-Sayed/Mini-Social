@@ -1,5 +1,6 @@
 package com.example.minisocial.Controller.PostManagement;
 
+import com.example.minisocial.Authentication.JWTRequired;
 import com.example.minisocial.Model.PostManagement.Post.Post;
 import com.example.minisocial.Model.PostManagement.Post.PostResponse;
 import com.example.minisocial.Service.PostManagement.Post.PostCreator;
@@ -8,6 +9,7 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
+@JWTRequired
 @Path("/post")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)

@@ -1,11 +1,13 @@
 package com.example.minisocial.Controller.PostManagement;
 
+import com.example.minisocial.Authentication.JWTRequired;
 import com.example.minisocial.Service.PostManagement.Post.EngRepo;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
+@JWTRequired
 @Path("/engagement")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)

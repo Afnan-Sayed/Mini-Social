@@ -1,5 +1,6 @@
 package com.example.minisocial.Controller.PostManagement;
 
+import com.example.minisocial.Authentication.JWTRequired;
 import com.example.minisocial.Model.PostManagement.Post.Post;
 import com.example.minisocial.Model.PostManagement.Post.PostResponse;
 import com.example.minisocial.Service.PostManagement.Post.FeedService;
@@ -10,6 +11,7 @@ import jakarta.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.List;
 
+@JWTRequired
 @Path("/feed")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)

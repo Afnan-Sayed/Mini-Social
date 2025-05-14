@@ -76,6 +76,9 @@ public class JWTFilter implements ContainerRequestFilter {
 
                 requestContext.setSecurityContext(customSecurityContext);
 
+                // Store the user ID in request properties for later use
+                requestContext.setProperty("userId", userId);
+
                 RolesAllowed rolesAllowed = resourceInfo.getResourceMethod().getAnnotation(RolesAllowed.class);
                 if (rolesAllowed == null) {
                     rolesAllowed = resourceInfo.getResourceClass().getAnnotation(RolesAllowed.class);

@@ -28,10 +28,6 @@ public class PostCreator
 
         User user = userService.getUserByEmail(loggedInEmail);
 
-        if (user.getRole().equalsIgnoreCase("admin")) {
-            throw new SecurityException("Admins are not allowed to create posts");
-        }
-
         //at least one post content is not null or empty
         if (postContents == null || postContents.isEmpty()) {
             throw new IllegalArgumentException("Post contents cannot be null or empty");
