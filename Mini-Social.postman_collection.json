@@ -1,0 +1,1140 @@
+{
+	"info": {
+		"_postman_id": "568846a0-52ba-47fa-8836-830336eb759e",
+		"name": "Mini-Social",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "44786801",
+		"_collection_link": "https://api-testing-project.postman.co/workspace/My-Workspace~24c0566a-76a0-4af4-82d7-56530f3139f4/collection/40496756-568846a0-52ba-47fa-8836-830336eb759e?action=share&source=collection_link&creator=44786801"
+	},
+	"item": [
+		{
+			"name": "UserManagement",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"afnan@gmail.com\",\r\n    \"password\": \"janaPassword123\",\r\n    \"name\": \"afnan\",\r\n    \"bio\": \"Hello! I'm a new user jana.\",\r\n    \"role\": \"user\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/Mini-Social-1.0-SNAPSHOT/api/user/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"Mini-Social-1.0-SNAPSHOT",
+								"api",
+								"user",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"afnan@gmail.com\",\r\n  \"password\": \"janaPassword123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/Mini-Social-1.0-SNAPSHOT/api/user/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"Mini-Social-1.0-SNAPSHOT",
+								"api",
+								"user",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Profile",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"malouka\",\r\n    \"bio\": \"Updated bio.\",\r\n    \"email\": \"newMalakk@example.com\",\r\n    \"password\": \"NewPassword123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/Mini-Social-1.0-SNAPSHOT/api/1/update",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"Mini-Social-1.0-SNAPSHOT",
+								"api",
+								"1",
+								"update"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "PostManagement",
+			"item": [
+				{
+					"name": "Create Post",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"status\": \"quite\",\r\n  \"postContents\": [\r\n    {\r\n        \"type\": \"image\",\r\n        \"contentValue\": \"https://imgs.search.brave.com/Hft1hjE3IHXA86BZ2zfcD4AyOL2IyQCBKyZIMOOOebA/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9jZG4u/cGl4YWJheS5jb20v/cGhvdG8vMjAyNS8w/NC8yOC8xOS81OS9m/ZW1hbGUtbW9kZWwt/OTU2NTYyOV82NDAu/anBn\"\r\n    }\r\n  ]\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/Mini-Social-1.0-SNAPSHOT/api/post/createPost?email=afnan@gmail.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"Mini-Social-1.0-SNAPSHOT",
+								"api",
+								"post",
+								"createPost"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "afnan@gmail.com"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Post User",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/Mini-Social-1.0-SNAPSHOT/api/posts/deletePost/5?email=jana@gmail.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"Mini-Social-1.0-SNAPSHOT",
+								"api",
+								"posts",
+								"deletePost",
+								"5"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "jana@gmail.com"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Post Admin",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"status\": \"happy\",\r\n  \"postContents\": [\r\n    {\r\n        \"type\": \"image\",\r\n        \"contentValue\": \"https://imgs.search.brave.com/Hft1hjE3IHXA86BZ2zfcD4AyOL2IyQCBKyZIMOOOebA/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9jZG4u/cGl4YWJheS5jb20v/cGhvdG8vMjAyNS8w/NC8yOC8xOS81OS9m/ZW1hbGUtbW9kZWwt/OTU2NTYyOV82NDAu/anBn\"\r\n    },\r\n    {\r\n         \"type\": \"text\",\r\n        \"contentValue\": \"hi\"\r\n    }\r\n  ]\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/Mini-Social-1.0-SNAPSHOT/api/posts/updatePost/2?email=afnan@gmail.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"Mini-Social-1.0-SNAPSHOT",
+								"api",
+								"posts",
+								"updatePost",
+								"2"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "afnan@gmail.com"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Feed",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"content\": \"This is a comment on the post\"\r\n}\r\n"
+						},
+						"url": {
+							"raw": "http://localhost:8080/Mini-Social-1.0-SNAPSHOT/api/feed/getFeed?email=afnan@gmail.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"Mini-Social-1.0-SNAPSHOT",
+								"api",
+								"feed",
+								"getFeed"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "afnan@gmail.com"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Like Post",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/Mini-Social-1.0-SNAPSHOT/api/engagement/likePost?postId=2&email=a@gmail.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"Mini-Social-1.0-SNAPSHOT",
+								"api",
+								"engagement",
+								"likePost"
+							],
+							"query": [
+								{
+									"key": "postId",
+									"value": "2"
+								},
+								{
+									"key": "email",
+									"value": "a@gmail.com"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Comment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"content\": \"This is a comment on the post\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/Mini-Social-1.0-SNAPSHOT/api/engagement/commentOnPost?postId=2&email=a@gmail.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"Mini-Social-1.0-SNAPSHOT",
+								"api",
+								"engagement",
+								"commentOnPost"
+							],
+							"query": [
+								{
+									"key": "postId",
+									"value": "2"
+								},
+								{
+									"key": "email",
+									"value": "a@gmail.com"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Post of User",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"afnan@gmail.com\",\r\n    \"password\": \"janaPassword123\",\r\n    \"name\": \"afnan\",\r\n    \"bio\": \"Hello! I'm a new user jana.\",\r\n    \"role\": \"user\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/Mini-Social-1.0-SNAPSHOT/api/getPostsOfUser?email=afnansayed@gmail.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"Mini-Social-1.0-SNAPSHOT",
+								"api",
+								"getPostsOfUser"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "afnansayed@gmail.com"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Post User",
+					"request": {
+						"method": "PUT",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Post Admin",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/Mini-Social-1.0-SNAPSHOT/api/posts/deletePostAdmin/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"Mini-Social-1.0-SNAPSHOT",
+								"api",
+								"posts",
+								"deletePostAdmin",
+								"3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ConnectionManagement",
+			"item": [
+				{
+					"name": "SendFriendRequest",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/Mini-Social-1.0-SNAPSHOT/api/connections/sendFriendRequest?senderId=1&receiverId=2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"Mini-Social-1.0-SNAPSHOT",
+								"api",
+								"connections",
+								"sendFriendRequest"
+							],
+							"query": [
+								{
+									"key": "senderId",
+									"value": "1"
+								},
+								{
+									"key": "receiverId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PendingRequest",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/Mini-Social-1.0-SNAPSHOT/api/connections/pendingRequests/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"Mini-Social-1.0-SNAPSHOT",
+								"api",
+								"connections",
+								"pendingRequests",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AcceptRequest",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/Mini-Social-1.0-SNAPSHOT/api/connections/acceptFriendRequest?requestId=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"Mini-Social-1.0-SNAPSHOT",
+								"api",
+								"connections",
+								"acceptFriendRequest"
+							],
+							"query": [
+								{
+									"key": "requestId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "RejectRequest",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/Mini-Social-1.0-SNAPSHOT/api/connections/rejectFriendRequest?requestId=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"Mini-Social-1.0-SNAPSHOT",
+								"api",
+								"connections",
+								"rejectFriendRequest"
+							],
+							"query": [
+								{
+									"key": "requestId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UserSearch",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/Mini-Social-1.0-SNAPSHOT/api/connections/search?searchTerm=jana.a.m.abdallah@gmail.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"Mini-Social-1.0-SNAPSHOT",
+								"api",
+								"connections",
+								"search"
+							],
+							"query": [
+								{
+									"key": "searchTerm",
+									"value": "jana.a.m.abdallah@gmail.com"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SuggestFriend",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/Mini-Social-1.0-SNAPSHOT/api/connections/suggestFriends/4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"Mini-Social-1.0-SNAPSHOT",
+								"api",
+								"connections",
+								"suggestFriends",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAllUserFriends",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/Mini-Social-1.0-SNAPSHOT/api/connections/friends?email=afnan@gmail.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"Mini-Social-1.0-SNAPSHOT",
+								"api",
+								"connections",
+								"friends"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "afnan@gmail.com"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ViewFriendProfile",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/Mini-Social-1.0-SNAPSHOT/api/connections/friend/1/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"Mini-Social-1.0-SNAPSHOT",
+								"api",
+								"connections",
+								"friend",
+								"1",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ViewFriendInfo",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/Mini-Social-1.0-SNAPSHOT/api/connections/view/3?email=jana@gmail.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"Mini-Social-1.0-SNAPSHOT",
+								"api",
+								"connections",
+								"view",
+								"3"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "jana@gmail.com"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Notifications",
+			"item": [
+				{
+					"name": "Activity Log",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Group Management",
+			"item": [
+				{
+					"name": "create group",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \" Closed Group\",\r\n  \"description\": \"This is a closed group\",\r\n  \"isOpen\": false,\r\n  \"creatorId\": 3  \r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/Mini-Social-1.0-SNAPSHOT/api/groups/create",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"Mini-Social-1.0-SNAPSHOT",
+								"api",
+								"groups",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "join group",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/Mini-Social-1.0-SNAPSHOT/api/groups/5/join?userId=6",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"Mini-Social-1.0-SNAPSHOT",
+								"api",
+								"groups",
+								"5",
+								"join"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "6"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "join group req responses",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \" Closed Group\",\r\n  \"description\": \"This is a closed group\",\r\n  \"isOpen\": false,\r\n  \"creatorId\": 3  \r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/Mini-Social-1.0-SNAPSHOT/api/groups/5/pending-requests",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"Mini-Social-1.0-SNAPSHOT",
+								"api",
+								"groups",
+								"5",
+								"pending-requests"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "join group approv",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \" Closed Group\",\r\n  \"description\": \"This is a closed group\",\r\n  \"isOpen\": false,\r\n  \"creatorId\": 3  \r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "/api/groups/requests/11/handle?adminId=3&approve=true",
+							"path": [
+								"api",
+								"groups",
+								"requests",
+								"11",
+								"handle"
+							],
+							"query": [
+								{
+									"key": "adminId",
+									"value": "3"
+								},
+								{
+									"key": "approve",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "promote to admin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \" Closed Group\",\r\n  \"description\": \"This is a closed group\",\r\n  \"isOpen\": false,\r\n  \"creatorId\": 3  \r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/Mini-Social-1.0-SNAPSHOT/api/groups/5/promote?adminId=1&userId=4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"Mini-Social-1.0-SNAPSHOT",
+								"api",
+								"groups",
+								"5",
+								"promote"
+							],
+							"query": [
+								{
+									"key": "adminId",
+									"value": "1"
+								},
+								{
+									"key": "userId",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete user",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \" Closed Group\",\r\n  \"description\": \"This is a closed group\",\r\n  \"isOpen\": false,\r\n  \"creatorId\": 3  \r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/Mini-Social-1.0-SNAPSHOT/api/groups/5/remove?adminId=1&userId=6",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"Mini-Social-1.0-SNAPSHOT",
+								"api",
+								"groups",
+								"5",
+								"remove"
+							],
+							"query": [
+								{
+									"key": "adminId",
+									"value": "1"
+								},
+								{
+									"key": "userId",
+									"value": "6"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get group",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \" Closed Group\",\r\n  \"description\": \"This is a closed group\",\r\n  \"isOpen\": false,\r\n  \"creatorId\": 3  \r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/Mini-Social-1.0-SNAPSHOT/api/groups/5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"Mini-Social-1.0-SNAPSHOT",
+								"api",
+								"groups",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "share post in group",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"status\": \"post on prof\",\r\n  \"postContents\": [\r\n    {\r\n      \"type\": \"text\",\r\n      \"contentValue\": \"prof test\"\r\n    }\r\n  ]\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/Mini-Social-1.0-SNAPSHOT/api/post/createPost?email=afnan@gmail.com&groupId=5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"Mini-Social-1.0-SNAPSHOT",
+								"api",
+								"post",
+								"createPost"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "afnan@gmail.com"
+								},
+								{
+									"key": "groupId",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get postgroup",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"status\": \"My post\",\r\n  \"postContents\": [\r\n    {\r\n      \"type\": \"text\",\r\n      \"contentValue\": \"This is a test post\"\r\n    }\r\n  ]\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/Mini-Social-1.0-SNAPSHOT/api/groups/5/posts?userId=6",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"Mini-Social-1.0-SNAPSHOT",
+								"api",
+								"groups",
+								"5",
+								"posts"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "6"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete post group",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/Mini-Social-1.0-SNAPSHOT/api/groups/5/posts/6/remove?adminId=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"Mini-Social-1.0-SNAPSHOT",
+								"api",
+								"groups",
+								"5",
+								"posts",
+								"6",
+								"remove"
+							],
+							"query": [
+								{
+									"key": "adminId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete group",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/Mini-Social-1.0-SNAPSHOT/api/groups/5?adminId=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"Mini-Social-1.0-SNAPSHOT",
+								"api",
+								"groups",
+								"5"
+							],
+							"query": [
+								{
+									"key": "adminId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Leave Group",
+					"request": {
+						"method": "DELETE",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "token",
+			"value": ""
+		}
+	]
+}
