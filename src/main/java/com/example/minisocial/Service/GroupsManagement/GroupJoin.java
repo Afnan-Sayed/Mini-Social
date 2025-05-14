@@ -41,7 +41,7 @@ public class GroupJoin {
                 String eventMessage = user.getName() + " has joined " + group.getName() + " group.";
                 NotificationEvent event = new NotificationEvent(
                         "JoinGroup",  // Event Type
-                        null,
+                        userId,
                         member.getId(),
                         eventMessage,
                         new java.util.Date().toString()

@@ -35,8 +35,8 @@ public class ConnectionService {
     @Transactional
     public void sendFriendRequest(User sender, User receiver) {
         // Check if sender and receiver are already friends
-        if (sender.getFriends().contains(receiver)) {
-            throw new IllegalStateException("You are already friends with this user.");
+        if (areFriends(sender.getId(), receiver.getId())) {
+            throw new IllegalStateException("You are already friends with "+ receiver.getName());
         }
 
         // Check if a pending request exists between them

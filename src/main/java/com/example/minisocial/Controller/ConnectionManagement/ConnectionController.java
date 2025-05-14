@@ -48,7 +48,7 @@ public class ConnectionController {
 
         try {
             connectionService.sendFriendRequest(sender, receiver);
-            return Response.ok().build();
+            return Response.ok().entity(sender.getName()+" has sent "+receiver.getName()+" a friend request").build();
         } catch (IllegalStateException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
@@ -70,7 +70,7 @@ public class ConnectionController {
         }
 
         connectionService.acceptFriendRequest(request);
-        return Response.ok().build();
+        return Response.ok().entity(request.getReceiver().getName()+" has accepted "+request.getSender().getName()+"'s friend request").build();
     }
 
     // Reject a friend request
@@ -86,7 +86,7 @@ public class ConnectionController {
 
         // Reject the friend request
         connectionService.rejectFriendRequest(request);
-        return Response.ok().build();
+        return Response.ok().entity(request.getReceiver().getName()+" has accepted "+request.getSender().getName()+"'s friend request").build();
     }
 
     // Get pending friend requests

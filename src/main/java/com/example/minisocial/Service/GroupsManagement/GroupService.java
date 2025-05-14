@@ -239,7 +239,7 @@ public class GroupService {
             String eventMessage = user.getName() + " has left " + group.getName() + ".";
             NotificationEvent event = new NotificationEvent(
                     "LeaveGroup",
-                    null,
+                    userId,
                     member.getId(),
                     eventMessage,
                     new java.util.Date().toString()
