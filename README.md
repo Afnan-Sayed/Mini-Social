@@ -97,12 +97,12 @@ APIs are documented in the provided Postman collection: `Mini-Social.postman_col
 ### 🔹 User Management
 - `POST /api/user/register` — Register a new user  
 - `POST /api/user/login` — Authenticate user  
-- `PUT /api/{user_id}/update` — Update user profile  
+- `PUT /api/{user}/update` — Update user profile  
 
 ### 🔹 Connection Management
 - `POST /api/connections/sendFriendRequest` — Send a friend request  
 - `GET /api/connections/friends` — View all friends  
-- `GET /api/connections/suggestFriends/{userId}` — Get friend suggestions  
+- `GET /api/connections/suggestFriends` — Get friend suggestions  
 - `GET /api/connections/search` — Search users by name or email  
 
 ### 🔹 Post Management
@@ -115,10 +115,10 @@ APIs are documented in the provided Postman collection: `Mini-Social.postman_col
 - `POST /api/groups/create` — Create a new group  
 - `POST /api/groups/{groupId}/join` — Join a group  
 - `PUT /api/groups/requests/{requestId}/handle` — Approve/reject group join requests  
-- `POST /api/post/createPost?groupId={groupId}` — Share a post in a group  
+- `POST /api/post/createPost` — Share a post in a group  
 
 ### 🔹 Notifications
-- `GET /api/notifications/activityLog` — View recent user actions  
+- `GET /api/notifications/activityLog/{userId}` — View recent user actions  
 - 📩 **JMS Queues** used for asynchronous event handling
 
 > 📂 For detailed request bodies and examples, import the Postman collection into Postman.
