@@ -86,14 +86,14 @@ public class ConnectionController {
 
         // Reject the friend request
         connectionService.rejectFriendRequest(request);
-        return Response.ok().entity(request.getReceiver().getName()+" has accepted "+request.getSender().getName()+"'s friend request").build();
+        return Response.ok().entity(request.getReceiver().getName()+" has rejected "+request.getSender().getName()+"'s friend request").build();
     }
 
     // Get pending friend requests
     @GET
-    @Path("/pendingRequests/{userId}")
+    @Path("/pendingRequests")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getPendingFriendRequests(@PathParam("userId") Long userId) {
+    public Response getPendingFriendRequests(@QueryParam("userId") Long userId) {
         // Fetch the user by ID
         User user = userConnection.findUserById(userId);
 
@@ -117,9 +117,9 @@ public class ConnectionController {
 
     // Suggest friends based on mutual connections
     @GET
-    @Path("/suggestFriends/{userId}")
+    @Path("/suggestFriends")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response suggestFriends(@PathParam("userId") Long userId) {
+    public Response suggestFriends(@QueryParam("userId") Long userId) {
         User user = userConnection.findUserById(userId);
 
         if (user == null) {
@@ -161,9 +161,9 @@ public class ConnectionController {
 
 
     @GET
-    @Path("/view/{friendId}")
+    @Path("/view")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response viewFriendProfile(@PathParam("friendId") Long friendId, @QueryParam("email") String email) {
+    public Response viewFriendProfile(@QueryParam("targetUserId") Long friendId, @QueryParam("email") String email) {
         if (email == null || email.isEmpty()) {
             return Response.status(Response.Status.BAD_REQUEST).entity("Email is required").build();
         }
@@ -210,10 +210,10 @@ public class ConnectionController {
 
     // GET /posts/friend/{requesterId}/{friendId}
     @GET
-    @Path("/friend/{requesterId}/{friendId}")
+    @Path("/friend")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getFriendPosts(@PathParam("requesterId") Long requesterId,
-                                   @PathParam("friendId") Long friendId) {
+    public Response getFriendPosts(@QueryParam("requesterId") Long requesterId,
+                                   @QueryParam("targetUserId") Long friendId) {
         try {
             List<Post> posts = connectionService.getFriendPosts(requesterId, friendId);
             List<PostResponse> postResponses = new ArrayList<>();

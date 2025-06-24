@@ -31,7 +31,7 @@ public class PostRepoController {
             List<Post> posts = postRepo.getPostsOfUser(email);
             return Response.status(Response.Status.OK).entity(posts).build();
         } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Failed to fetch posts: " + e.getMessage()).build();
+            return Response.status(Response.Status.FORBIDDEN).entity("Failed to fetch posts: " + e.getMessage()).build();
         }
     }
 
@@ -45,7 +45,7 @@ public class PostRepoController {
         } catch (IllegalArgumentException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Failed to delete post: " + e.getMessage()).build();
+            return Response.status(Response.Status.FORBIDDEN).entity("Failed to delete post: " + e.getMessage()).build();
         }
     }
     @DELETE
@@ -61,7 +61,7 @@ public class PostRepoController {
         } catch (IllegalArgumentException | SecurityException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Failed to delete post: " + e.getMessage()).build();
+            return Response.status(Response.Status.FORBIDDEN).entity("Failed to delete post: " + e.getMessage()).build();
         }
     }
 
@@ -76,7 +76,7 @@ public class PostRepoController {
         } catch (IllegalArgumentException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Failed to update post: " + e.getMessage()).build();
+            return Response.status(Response.Status.FORBIDDEN).entity("Failed to update post: " + e.getMessage()).build();
         }
     }
     @PUT
@@ -92,7 +92,7 @@ public class PostRepoController {
         } catch (IllegalArgumentException | SecurityException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Failed to update post: " + e.getMessage()).build();
+            return Response.status(Response.Status.FORBIDDEN).entity("Failed to update post: " + e.getMessage()).build();
         }
     }
 

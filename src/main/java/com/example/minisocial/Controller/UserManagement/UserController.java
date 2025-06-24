@@ -3,14 +3,18 @@ package com.example.minisocial.Controller.UserManagement;
 
 import com.example.minisocial.Authentication.JWTRequired;
 import com.example.minisocial.Model.UserManagement.User;
+import com.example.minisocial.Model.UserManagement.User2DTO;
 import com.example.minisocial.Service.UserManagement.UserLoginService;
 import com.example.minisocial.Service.UserManagement.UserRegistrationService;
+import com.example.minisocial.Service.UserManagement.UserService;
 import com.example.minisocial.Service.UserManagement.UserUpdateProfileService;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.*;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Path("/user")
@@ -24,6 +28,8 @@ public class UserController {
     private UserRegistrationService userRegistrationService;
     @Inject
     UserUpdateProfileService userUpdateProfileService;
+    @Inject
+    UserService userService;
 
     @POST
     @Path("/login")
@@ -61,8 +67,8 @@ public class UserController {
 
     @JWTRequired
     @PUT
-    @Path("/{user_id}/update")
-    public Response updateUserProfile(@PathParam("user_id") long userId, User updatedUser)
+    @Path("/update")
+    public Response updateUserProfile(@QueryParam("userId") long userId, User updatedUser)
     {
         try {
             // Call the service to update the user's profile with the updated information
@@ -87,8 +93,17 @@ public class UserController {
                     .build();
         }
     }
-
-
-
+    @GET
+    @Path("/getAllUsers")
+    @JWTRequired
+    @RolesAllowed("admin")
+    public Response GetAllUsers() {
+        try {
+            List<User2DTO> users=userService.getAllUsers();
+            return Response.status(Response.Status.OK).entity(users).build();
+        } catch (IllegalArgumentException e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+        }
+    }
 
 }
