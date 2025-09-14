@@ -1,0 +1,6 @@
+projectKey=Mini-Social
+serverUrl=http://localhost:9000
+serverVersion=8.9.10.61524
+dashboardUrl=http://localhost:9000/dashboard?id=Mini-Social
+ceTaskId=AZayGme5RmfeB-an-jTT
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AZayGme5RmfeB-an-jTT
